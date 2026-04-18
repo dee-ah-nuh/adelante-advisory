@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Adelante Advisory — Instagram & Social Kit</title>
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='none' stroke='%231F2B23' stroke-width='1.4'/><path d='M8 19 L16 9 L24 19' fill='none' stroke='%23C45A3B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='9' r='2.2' fill='%23C45A3B'/></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#ECE5D8;color:#1F2B23;font-family:"Inter Tight",system-ui,sans-serif;padding:48px;min-height:100vh}
+.page-head{max-width:1600px;margin:0 auto 64px;border-bottom:1px solid rgba(31,43,35,0.15);padding-bottom:32px}
+.page-head h1{font-family:"Instrument Serif",serif;font-size:72px;font-weight:400;letter-spacing:-1.5px;line-height:1}
+.page-head h1 em{color:#C45A3B}
+.page-head p{font-family:"Instrument Serif",serif;font-style:italic;font-size:22px;color:#3D4A40;margin-top:14px;max-width:760px}
+.page-head .meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7A7568;margin-top:24px;display:flex;gap:28px;flex-wrap:wrap}
+.page-head .meta a{color:#C45A3B;text-decoration:none;border-bottom:1px solid rgba(196,90,59,0.3)}
+
+.section{max-width:1600px;margin:0 auto 80px}
+.section-head{margin-bottom:28px;display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.section-head h2{font-family:"Instrument Serif",serif;font-size:44px;font-weight:400;letter-spacing:-1px}
+.section-head h2 em{color:#C45A3B}
+.section-head .sub{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7A7568}
+.section-head .lede{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:#3D4A40;max-width:640px;flex:1;min-width:300px}
+
+/* Scaled thumbnails — actual posts render at full dimensions, we scale them */
+.grid{display:grid;gap:32px}
+.grid-sq{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.grid-ls{grid-template-columns:repeat(auto-fill,minmax(480px,1fr))}
+.grid-banner{grid-template-columns:1fr}
+.grid-icons{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+
+.thumb{background:#F5F1EA;border:1px solid rgba(31,43,35,0.15);border-radius:4px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.thumb-canvas{overflow:hidden;background:#F5F1EA;border:1px solid rgba(31,43,35,0.1);aspect-ratio:auto;position:relative}
+.thumb-inner{transform-origin:top left;position:absolute;top:0;left:0}
+.thumb-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#7A7568}
+.thumb-label{font-family:"Instrument Serif",serif;font-style:italic;font-size:18px;color:#1F2B23;letter-spacing:-0.3px;text-transform:none}
+
+.icon-card{background:#F5F1EA;border:1px solid rgba(31,43,35,0.15);border-radius:4px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px}
+.icon-card svg{width:56px;height:56px}
+.icon-card .name{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#7A7568}
+
+.download-note{max-width:1600px;margin:0 auto 48px;padding:28px 32px;background:#1F2B23;color:#F5F1EA;border-radius:4px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.download-note .title{font-family:"Instrument Serif",serif;font-style:italic;font-size:26px}
+.download-note .sub{font-family:"Inter Tight",sans-serif;font-size:14px;color:rgba(245,241,234,0.7);max-width:500px;line-height:1.5;margin-top:4px}
+.download-note .cta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5D5C7;border:1px solid rgba(245,213,199,0.5);padding:10px 16px;border-radius:4px}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="page-head">
+  <h1>Adelante Advisory — <em>Social kit.</em></h1>
+  <p>25 Instagram posts · 10 Zoom backgrounds · 1 LinkedIn banner · 7 reusable icons. Editorial warmth, bilingual, plug-and-play.</p>
+  <div class="meta">
+    <span>COLORS · #F5F1EA / #1F2B23 / #C45A3B</span>
+    <span>TYPE · Instrument Serif / Inter Tight / JetBrains Mono</span>
+    <a href="../README.md">↗ Full design system</a>
+  </div>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+// Adelante Advisory — Instagram kit content & shared primitives
+// All 25 posts, 10 zoom backgrounds, 1 LinkedIn banner. Bilingual.
+
+const BG = '#F5F1EA', BG_ALT = '#ECE5D8', CARD = '#FCF8F1';
+const INK = '#1F2B23', INK_SOFT = '#3D4A40', MUTED = '#7A7568';
+const ACCENT = '#C45A3B', BORDER = 'rgba(31,43,35,0.15)';
+const SERIF = '"Instrument Serif", "Times New Roman", serif';
+const SANS = '"Inter Tight", -apple-system, system-ui, sans-serif';
+const MONO = '"JetBrains Mono", "SF Mono", ui-monospace, monospace';
+
+// Reusable marks ------------------------------------------------------------
+const Logo = ({ size = 28, color = INK }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" style={{flexShrink:0}}>
+    <circle cx="16" cy="16" r="15" fill="none" stroke={color} strokeWidth="1.4"/>
+    <path d="M8 19 L16 9 L24 19" fill="none" stroke={ACCENT} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="16" cy="9" r="2.2" fill={ACCENT}/>
+  </svg>
+);
+
+const Wordmark = ({ light = false, scale = 1 }) => (
+  <div style={{display:'flex', alignItems:'center', gap:10*scale}}>
+    <Logo size={26*scale} color={light ? BG : INK}/>
+    <span style={{fontFamily:SERIF, fontSize:22*scale, letterSpacing:-0.3, color: light ? BG : INK}}>Adelante</span>
+    <span style={{fontFamily:MONO, fontSize:10*scale, color: light ? 'rgba(245,241,234,0.6)' : MUTED, letterSpacing:1.5, marginTop:4*scale}}>ADVISORY</span>
+  </div>
+);
+
+const Eyebrow = ({ children, color = MUTED, size = 12 }) => (
+  <div style={{fontFamily:MONO, fontSize:size, letterSpacing:2, textTransform:'uppercase', color, display:'flex', alignItems:'center', gap:10}}>
+    <span style={{width:24, height:1, background:color, opacity:0.6}}/>
+    {children}
+  </div>
+);
+
+// Textured paper background (subtle noise using inline svg)
+const paperTexture = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.17 0 0 0 0 0.14 0 0 0 0.045 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")`;
+
+// Decorative ornaments -------------------------------------------------------
+const Ornament = ({ kind = 'dots' }) => {
+  if (kind === 'dots') return (
+    <div style={{display:'flex', gap:6}}>
+      {[0,1,2].map(i => <span key={i} style={{width:4, height:4, borderRadius:'50%', background:ACCENT}}/>)}
+    </div>
+  );
+  if (kind === 'rule') return <div style={{width:48, height:1, background:INK, opacity:0.3}}/>;
+  if (kind === 'arrow') return <span style={{color:ACCENT, fontSize:20}}>→</span>;
+  if (kind === 'star') return (
+    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1 L9 6 L14 7 L9 8 L8 13 L7 8 L2 7 L7 6 Z" fill={ACCENT}/></svg>
+  );
+  return null;
+};
+
+// Number stamp — for numbered carousels & steps
+const NumberStamp = ({ n, color = ACCENT }) => (
+  <div style={{fontFamily:MONO, fontSize:11, letterSpacing:2, color, textTransform:'uppercase'}}>{n}</div>
+);
+
+// Post frame — wraps each post at exact pixel dimensions
+const PostFrame = ({ w, h, bg = BG, children, id, label }) => (
+  <div data-post-id={id} data-post-label={label} style={{
+    width:w, height:h, background:bg, position:'relative', overflow:'hidden',
+    fontFamily:SANS, color:INK, boxShadow:'0 2px 12px rgba(31,43,35,0.08)',
+    flexShrink:0,
+  }}>
+    {children}
+  </div>
+);
+
+// Footer bar used across most posts
+const PostFooter = ({ light = false, handle = '@adelanteadvisory', right = 'adelanteadvisory.com' }) => (
+  <div style={{
+    position:'absolute', left:64, right:64, bottom:52,
+    display:'flex', justifyContent:'space-between', alignItems:'center',
+    fontFamily:MONO, fontSize:12, letterSpacing:1.5, textTransform:'uppercase',
+    color: light ? 'rgba(245,241,234,0.7)' : MUTED,
+  }}>
+    <div style={{display:'flex', alignItems:'center', gap:10}}>
+      <Logo size={18} color={light ? BG : INK}/>
+      <span>{handle}</span>
+    </div>
+    <span>{right}</span>
+  </div>
+);
+
+// Bilingual divider label
+const BiRule = ({ en, es, color = MUTED }) => (
+  <div style={{display:'flex', alignItems:'center', gap:14, fontFamily:MONO, fontSize:10, letterSpacing:2, textTransform:'uppercase', color}}>
+    <span>{en}</span>
+    <span style={{width:24, height:1, background:color, opacity:0.5}}/>
+    <span style={{fontStyle:'italic', textTransform:'none', fontFamily:SERIF, fontSize:13, letterSpacing:0}}>{es}</span>
+  </div>
+);
+
+Object.assign(window, {
+  BG, BG_ALT, CARD, INK, INK_SOFT, MUTED, ACCENT, BORDER,
+  SERIF, SANS, MONO, paperTexture,
+  Logo, Wordmark, Eyebrow, Ornament, NumberStamp, PostFrame, PostFooter, BiRule,
+});
+
+
+// ============================================================
+
+// Adelante Advisory — 25 Instagram posts, bilingual EN/ES
+// Formats: 1080x1080 (IG square), 1080x1350 (IG carousel / 4:5), 1200x1200 (LinkedIn)
+
+// ============================================================
+// POST 01 — Hero intro (IG 1:1, 1080x1080)
+// ============================================================
+const Post01 = () => (
+  <PostFrame w={1080} h={1080} bg={BG} id="01" label="Hero intro">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <Wordmark scale={1.2}/>
+    </div>
+    <div style={{position:'absolute', top:220, left:64, right:64}}>
+      <Eyebrow size={13}>Welcome · Bienvenidxs</Eyebrow>
+    </div>
+    <div style={{position:'absolute', top:300, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:128, lineHeight:0.95, letterSpacing:-3, color:INK, fontWeight:400}}>
+        Your career,<br/>
+        <span style={{fontStyle:'italic'}}>finally </span>
+        <span style={{color:ACCENT}}>mapped</span><br/>
+        <span style={{fontStyle:'italic', color:ACCENT}}>out.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:130, left:64, right:64, fontFamily:SERIF, fontStyle:'italic', fontSize:30, color:INK_SOFT, maxWidth:720, lineHeight:1.3}}>
+      Career coaching for Latin Americans<br/>navigating US corporate life.
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 02 — Stat hook (IG 1:1)
+// ============================================================
+const Post02 = () => (
+  <PostFrame w={1080} h={1080} bg={BG_ALT} id="02" label="Stat hook — applications">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Eyebrow>Data · Datos</Eyebrow>
+      <Ornament kind="dots"/>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:280, lineHeight:1, letterSpacing:-8, color:ACCENT, fontWeight:400}}>250+</div>
+    </div>
+    <div style={{position:'absolute', top:540, left:64, right:64, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:46, fontStyle:'italic', color:INK, lineHeight:1.2, marginBottom:14}}>
+        average applications before<br/>a first US offer.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:INK_SOFT, marginTop:28}}>
+        Promedio de aplicaciones antes de tu primera oferta.
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:170, left:64, right:64, textAlign:'center', fontFamily:MONO, fontSize:13, color:MUTED, letterSpacing:1.5}}>
+      YOU ARE NOT FAILING. <span style={{color:ACCENT}}>★</span> NO ESTÁS FRACASANDO.
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 03 — Myth vs Truth (IG 4:5)
+// ============================================================
+const Post03 = () => (
+  <PostFrame w={1080} h={1350} bg={BG} id="03" label="Myth vs truth — networking">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <BiRule en="Myth vs Truth" es="Mito vs Verdad"/>
+    </div>
+    <div style={{position:'absolute', top:160, left:64, right:64}}>
+      <div style={{background:'transparent', border:`1px solid ${BORDER}`, borderRadius:4, padding:'32px 36px', marginBottom:24, position:'relative'}}>
+        <div style={{position:'absolute', top:-10, left:24, background:BG, padding:'0 12px', fontFamily:MONO, fontSize:11, letterSpacing:2, color:MUTED, textTransform:'uppercase'}}>Myth · Mito</div>
+        <div style={{fontFamily:SERIF, fontSize:42, fontStyle:'italic', color:INK_SOFT, lineHeight:1.2, textDecoration:'line-through', textDecorationColor:'rgba(196,90,59,0.5)', textDecorationThickness:2}}>
+          "Networking is for extroverts who love small talk."
+        </div>
+      </div>
+      <div style={{background:INK, color:BG, borderRadius:4, padding:'36px 36px', position:'relative'}}>
+        <div style={{position:'absolute', top:-10, left:24, background:ACCENT, color:BG, padding:'4px 12px', fontFamily:MONO, fontSize:11, letterSpacing:2, textTransform:'uppercase'}}>Truth · Verdad</div>
+        <div style={{fontFamily:SERIF, fontSize:48, lineHeight:1.15, letterSpacing:-0.8, marginTop:6}}>
+          Networking is just <span style={{fontStyle:'italic', color:'#F5D5C7'}}>one conversation</span>, repeated.
+        </div>
+        <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:'rgba(245,241,234,0.75)', marginTop:24, lineHeight:1.3}}>
+          Hacer networking es solo una conversación, repetida.
+        </div>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:180, left:64, right:64, fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:INK_SOFT, textAlign:'center'}}>
+      Start with one coffee chat. <span style={{color:ACCENT}}>→</span>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 04 — Carousel cover: "5 things I wish I knew" (4:5)
+// ============================================================
+const Post04 = () => (
+  <PostFrame w={1080} h={1350} bg={BG} id="04" label="Carousel cover — 5 things">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Eyebrow>Carousel · 01 / 06</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:1.5}}>SWIPE →</div>
+    </div>
+    <div style={{position:'absolute', top:260, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:160, lineHeight:0.95, letterSpacing:-5, color:INK, fontWeight:400}}>
+        <span style={{color:ACCENT, fontStyle:'italic'}}>5 things</span><br/>
+        I wish I knew<br/>
+        before my<br/>
+        <span style={{fontStyle:'italic'}}>first US job.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:180, left:64, right:64, fontFamily:SERIF, fontStyle:'italic', fontSize:32, color:INK_SOFT}}>
+      5 cosas que hubiera querido saber antes de mi primer trabajo en EE.UU.
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// Carousel slides 05-08 use shared layout
+const CarouselSlide = ({ n, total, titleEn, titleEs, bodyEn, bodyEs, id, label }) => (
+  <PostFrame w={1080} h={1350} bg={BG} id={id} label={label}>
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Eyebrow>Carousel · 0{n} / 0{total}</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:1.5}}>SWIPE →</div>
+    </div>
+    <div style={{position:'absolute', top:220, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:240, lineHeight:0.9, letterSpacing:-8, color:ACCENT, fontWeight:400, fontStyle:'italic'}}>
+        0{n-1}
+      </div>
+    </div>
+    <div style={{position:'absolute', top:540, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:72, lineHeight:1.02, letterSpacing:-1.5, color:INK, fontWeight:400}}>
+        {titleEn}
+      </div>
+      <div style={{width:48, height:1, background:INK, opacity:0.3, margin:'36px 0'}}/>
+      <div style={{fontFamily:SANS, fontSize:21, lineHeight:1.55, color:INK_SOFT, marginBottom:32, maxWidth:900}}>
+        {bodyEn}
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:MUTED, lineHeight:1.4, maxWidth:900}}>
+        {titleEs} — {bodyEs}
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+const Post05 = () => <CarouselSlide id="05" label="Carousel 02" n={2} total={6}
+  titleEn="Applying isn't the job. Networking is."
+  titleEs="Aplicar no es el trabajo. Hacer networking sí."
+  bodyEn="The listings you see on LinkedIn have 300 applicants. The opportunity comes from the coffee chat. Build 3 relationships a week before you build a résumé."
+  bodyEs="Los listings tienen 300 aplicantes. La oportunidad viene del coffee chat. Construye 3 relaciones por semana antes de perfeccionar tu résumé."
+/>;
+
+const Post06 = () => <CarouselSlide id="06" label="Carousel 03" n={3} total={6}
+  titleEn='Your résumé is a pitch, not an autobiography.'
+  titleEs="Tu résumé es un pitch, no una autobiografía."
+  bodyEn="One page. Results, not responsibilities. Numbers whenever possible. They read it for 6 seconds — make them count."
+  bodyEs="Una página. Resultados, no responsabilidades. Números cuando puedas. Lo leen por 6 segundos — que cuenten."
+/>;
+
+const Post07 = () => <CarouselSlide id="07" label="Carousel 04" n={4} total={6}
+  titleEn='"Talking about yourself" is the job.'
+  titleEs='"Hablar de ti" es parte del trabajo.'
+  bodyEn="In Latin America, modesty is a virtue. In US corporate, invisibility is a career risk. Learn to name your wins — out loud, in 1:1s, in meetings."
+  bodyEs="En Latinoamérica, la modestia es virtud. En el corporate gringo, la invisibilidad es riesgo. Aprende a nombrar tus wins — en voz alta."
+/>;
+
+const Post08 = () => <CarouselSlide id="08" label="Carousel 05" n={5} total={6}
+  titleEn="Negotiate. Always."
+  titleEs="Negocia. Siempre."
+  bodyEn="The first offer is never the final offer. 'Thank you — is there flexibility on the base?' One sentence. You will not lose the job. You will gain thousands."
+  bodyEs="La primera oferta nunca es la final. 'Gracias — ¿hay flexibilidad en el base?' Una frase. No vas a perder el puesto. Vas a ganar miles."
+/>;
+
+// Final carousel card — CTA
+const Post09 = () => (
+  <PostFrame w={1080} h={1350} bg={INK} id="09" label="Carousel end — CTA">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <div style={{fontFamily:MONO, fontSize:12, letterSpacing:2, textTransform:'uppercase', color:'rgba(245,241,234,0.6)', display:'flex', alignItems:'center', gap:10}}>
+        <span style={{width:24, height:1, background:'rgba(245,241,234,0.6)'}}/>
+        Carousel · 06 / 06
+      </div>
+      <Ornament kind="star"/>
+    </div>
+    <div style={{position:'absolute', top:320, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:120, lineHeight:0.95, letterSpacing:-3, color:BG, fontWeight:400}}>
+        Want <span style={{fontStyle:'italic', color:'#F5D5C7'}}>help</span><br/>
+        doing this<br/>
+        <span style={{fontStyle:'italic', color:ACCENT}}>in real life?</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:280, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:32, color:'rgba(245,241,234,0.85)', marginBottom:36}}>
+        Book a free 15-min call.<br/>
+        Agenda una llamada gratis.
+      </div>
+      <div style={{display:'inline-block', background:ACCENT, color:BG, padding:'22px 36px', borderRadius:4, fontFamily:SANS, fontSize:20, fontWeight:500}}>
+        adelanteadvisory.com →
+      </div>
+    </div>
+    <PostFooter light/>
+  </PostFrame>
+);
+
+Object.assign(window, { Post01, Post02, Post03, Post04, Post05, Post06, Post07, Post08, Post09, CarouselSlide });
+
+
+// ============================================================
+
+// Adelante Advisory — Instagram posts 10–17
+// Myth vs truth, CTAs, founder-forward, stat hooks
+
+// ============================================================
+// POST 10 — CTA: Book a free call (IG 1:1)
+// ============================================================
+const Post10 = () => (
+  <PostFrame w={1080} h={1080} bg={BG} id="10" label="CTA — free call">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <Eyebrow>Book · Agenda</Eyebrow>
+    </div>
+    <div style={{position:'absolute', top:220, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:132, lineHeight:0.95, letterSpacing:-3, color:INK, fontWeight:400}}>
+        <span style={{fontStyle:'italic'}}>15 minutes.</span><br/>
+        No pitch.<br/>
+        Just a <span style={{color:ACCENT, fontStyle:'italic'}}>conversation.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:240, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:30, color:INK_SOFT, marginBottom:28}}>
+        15 minutos. Sin pitch. Solo una conversación.
+      </div>
+      <div style={{display:'inline-block', background:INK, color:BG, padding:'20px 32px', borderRadius:4, fontFamily:SANS, fontSize:19, fontWeight:500}}>
+        adelanteadvisory.com →
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 11 — Founder intro: Paty (IG 4:5)
+// ============================================================
+const FounderCard = ({ id, label, name, initials, role, company, city, cityEs, tintLight, quoteEn, quoteEs, specialtyEn, specialtyEs }) => (
+  <PostFrame w={1080} h={1350} bg={BG} id={id} label={label}>
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Eyebrow>Meet the advisors · Conócenos</Eyebrow>
+      <Wordmark scale={0.7}/>
+    </div>
+    <div style={{position:'absolute', top:160, left:64, width:460, height:560, background:tintLight, border:`1px solid ${BORDER}`, padding:16, boxSizing:'border-box', display:'flex', alignItems:'flex-end', justifyContent:'center', transform:'rotate(-1.2deg)'}}>
+      <div style={{fontFamily:SERIF, fontSize:260, color:'rgba(31,43,35,0.18)', letterSpacing:-8, lineHeight:1, marginBottom:-18}}>{initials}</div>
+      <div style={{position:'absolute', bottom:14, left:20, fontFamily:SERIF, fontStyle:'italic', fontSize:30, color:'#fff', textShadow:'0 1px 8px rgba(0,0,0,0.5)'}}>{city}</div>
+    </div>
+    <div style={{position:'absolute', top:200, left:580, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:80, lineHeight:1, letterSpacing:-1.5, color:INK, fontWeight:400}}>{name}</div>
+      <div style={{fontFamily:SANS, fontSize:18, color:INK_SOFT, marginTop:12, maxWidth:420, lineHeight:1.5}}>{role}</div>
+      <div style={{fontFamily:MONO, fontSize:12, letterSpacing:1.5, color:ACCENT, marginTop:10, textTransform:'uppercase'}}>{company}</div>
+      <div style={{width:40, height:1, background:INK, opacity:0.25, margin:'36px 0'}}/>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:32, color:INK, lineHeight:1.25, maxWidth:440}}>"{quoteEn}"</div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:MUTED, marginTop:18, lineHeight:1.3, maxWidth:440}}>"{quoteEs}"</div>
+    </div>
+    <div style={{position:'absolute', bottom:170, left:64, right:64, fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:1.5, textTransform:'uppercase'}}>
+      SPECIALTY · <span style={{color:INK}}>{specialtyEn}</span>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+const Post11 = () => <FounderCard
+  id="11" label="Founder — Paty"
+  name="Paty Vega" initials="PV" role="Product Marketing Manager"
+  company="S&P Global · New York" city="New York" cityEs="Nueva York"
+  tintLight="#E8D4C4"
+  quoteEn="Your story isn't your weakness. It's the reason they'll remember you."
+  quoteEs="Tu historia no es tu debilidad. Es por lo que te van a recordar."
+  specialtyEn="Marketing · Finance · Storytelling"
+  specialtyEs="Marketing · Finanzas · Storytelling"
+/>;
+
+// ============================================================
+// POST 12 — Founder intro: Diana (IG 4:5)
+// ============================================================
+const Post12 = () => <FounderCard
+  id="12" label="Founder — Diana"
+  name="Diana Valladares" initials="DV" role="Senior Consultant, Data Engineering & Architecture"
+  company="AArete · Chicago" city="Chicago" cityEs="Chicago"
+  tintLight="#D6DFD4"
+  quoteEn="Technical interviews aren't trivia. They're storytelling with structure."
+  quoteEs="Las entrevistas técnicas no son trivia. Son storytelling con estructura."
+  specialtyEn="Consulting · Data · Technical interviews · AI"
+  specialtyEs="Consultoría · Data · Entrevistas técnicas · IA"
+/>;
+
+// ============================================================
+// POST 13 — Myth vs truth: negotiation (IG 1:1)
+// ============================================================
+const Post13 = () => (
+  <PostFrame w={1080} h={1080} bg={BG_ALT} id="13" label="Myth vs truth — negotiation">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <BiRule en="Myth vs Truth" es="Mito vs Verdad"/>
+    </div>
+    <div style={{position:'absolute', top:160, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:40, fontStyle:'italic', color:INK_SOFT, lineHeight:1.2, textDecoration:'line-through', textDecorationColor:'rgba(196,90,59,0.5)', textDecorationThickness:2, marginBottom:48}}>
+        "If I negotiate, they'll rescind the offer."
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:68, lineHeight:1.05, letterSpacing:-1.5, color:INK, fontWeight:400}}>
+        They <span style={{fontStyle:'italic', color:ACCENT}}>expect</span> you to negotiate.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:INK_SOFT, marginTop:28, lineHeight:1.3}}>
+        Esperan que negocies. No vas a perder la oferta.
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:180, left:64, right:64, display:'flex', alignItems:'center', gap:14, fontFamily:MONO, fontSize:13, color:MUTED, letterSpacing:1.5}}>
+      <span style={{width:32, height:1, background:MUTED}}/>
+      <span>EVERY OFFER HAS ROOM. <span style={{color:ACCENT}}>★</span> TODA OFERTA TIENE MARGEN.</span>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 14 — Stat hook: time to first offer (IG 1:1)
+// ============================================================
+const Post14 = () => (
+  <PostFrame w={1080} h={1080} bg={BG} id="14" label="Stat — time to offer">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between'}}>
+      <Eyebrow>Data · Datos</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:11, color:MUTED, letterSpacing:1.5}}>SOURCE: CLIENT AVG</div>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64, display:'flex', alignItems:'baseline', justifyContent:'center', gap:20}}>
+      <span style={{fontFamily:SERIF, fontSize:300, lineHeight:1, letterSpacing:-10, color:INK, fontWeight:400}}>9</span>
+      <span style={{fontFamily:SERIF, fontSize:100, fontStyle:'italic', color:ACCENT}}>weeks</span>
+    </div>
+    <div style={{position:'absolute', top:560, left:64, right:64, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:38, color:INK, lineHeight:1.25, maxWidth:860, margin:'0 auto'}}>
+        Average time from our first session<br/>to a <span style={{fontStyle:'italic', color:ACCENT}}>first offer.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:24, color:INK_SOFT, marginTop:28}}>
+        Tiempo promedio de primera sesión a primera oferta.
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 15 — Tip carousel cover: Résumé edition (4:5)
+// ============================================================
+const Post15 = () => (
+  <PostFrame w={1080} h={1350} bg={ACCENT} id="15" label="Cover — Résumé tips">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', color:BG}}>
+      <Eyebrow color="rgba(245,241,234,0.7)">Résumé tips · 01 / 05</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:12, letterSpacing:1.5, color:'rgba(245,241,234,0.7)'}}>SWIPE →</div>
+    </div>
+    <div style={{position:'absolute', top:320, left:64, right:64, color:BG}}>
+      <div style={{fontFamily:SERIF, fontSize:170, lineHeight:0.95, letterSpacing:-5, fontWeight:400}}>
+        How to<br/>
+        <span style={{fontStyle:'italic'}}>rewrite</span><br/>
+        your résumé<br/>
+        <span style={{fontStyle:'italic', color:INK}}>like a gringo.*</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:180, left:64, right:64, fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:'rgba(245,241,234,0.85)'}}>
+      *sin perder tu historia.
+    </div>
+    <PostFooter light handle="@adelanteadvisory"/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 16 — Résumé tip: verbs (4:5)
+// ============================================================
+const TipCard = ({ id, label, n, total, titleEn, titleEs, rows }) => (
+  <PostFrame w={1080} h={1350} bg={BG} id={id} label={label}>
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between'}}>
+      <Eyebrow>Résumé tips · 0{n} / 0{total}</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:1.5}}>SWIPE →</div>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:80, lineHeight:1, letterSpacing:-1.5, color:INK, fontWeight:400, maxWidth:900}}>
+        {titleEn}
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:INK_SOFT, marginTop:18, maxWidth:900}}>
+        {titleEs}
+      </div>
+    </div>
+    <div style={{position:'absolute', top:540, left:64, right:64}}>
+      {rows.map((r, i) => (
+        <div key={i} style={{display:'grid', gridTemplateColumns:'1fr auto 1fr', gap:32, alignItems:'center', padding:'28px 0', borderTop: i === 0 ? `1px solid ${BORDER}` : 'none', borderBottom:`1px solid ${BORDER}`}}>
+          <div style={{fontFamily:SERIF, fontSize:28, color:INK_SOFT, textDecoration:'line-through', textDecorationColor:'rgba(196,90,59,0.5)', fontStyle:'italic'}}>{r.bad}</div>
+          <div style={{color:ACCENT, fontSize:26}}>→</div>
+          <div style={{fontFamily:SERIF, fontSize:32, color:INK}}>{r.good}</div>
+        </div>
+      ))}
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+const Post16 = () => <TipCard id="16" label="Tip — verbs" n={2} total={5}
+  titleEn="Verbs do the heavy lifting."
+  titleEs="Los verbos hacen el trabajo pesado."
+  rows={[
+    { bad: "Responsible for sales reports", good: "Drove 22% revenue growth" },
+    { bad: "Worked on marketing campaigns", good: "Launched 4 campaigns, +38% leads" },
+    { bad: "Helped with the migration",    good: "Led SQL → Snowflake migration" },
+  ]}
+/>;
+
+// ============================================================
+// POST 17 — Résumé tip: one page (4:5)
+// ============================================================
+const Post17 = () => (
+  <PostFrame w={1080} h={1350} bg={BG} id="17" label="Tip — one page">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between'}}>
+      <Eyebrow>Résumé tips · 03 / 05</Eyebrow>
+      <div style={{fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:1.5}}>SWIPE →</div>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:280, lineHeight:1, letterSpacing:-10, color:ACCENT, fontWeight:400, fontStyle:'italic'}}>1</div>
+      <div style={{fontFamily:SERIF, fontSize:80, lineHeight:1.02, letterSpacing:-1.5, color:INK, fontWeight:400, marginTop:-40}}>
+        page. Always.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:28, color:INK_SOFT, marginTop:20}}>
+        Una página. Siempre.
+      </div>
+    </div>
+    <div style={{position:'absolute', top:820, left:64, right:64}}>
+      <div style={{width:48, height:1, background:INK, opacity:0.3, marginBottom:28}}/>
+      <div style={{fontFamily:SANS, fontSize:20, lineHeight:1.55, color:INK_SOFT, maxWidth:900}}>
+        If you have less than 10 years of experience, one page is not a suggestion — it's the rule. Recruiters skim for 6 seconds. Make every line earn its spot.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:20, color:MUTED, marginTop:18, maxWidth:900}}>
+        Con menos de 10 años de experiencia, una página es la regla. Cada línea tiene que ganarse el espacio.
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+Object.assign(window, { Post10, Post11, Post12, Post13, Post14, Post15, Post16, Post17, FounderCard, TipCard });
+
+
+// ============================================================
+
+// Adelante Advisory — Instagram posts 18–25
+// LinkedIn 1:1 posts, CTAs, announcements, final variety
+
+// ============================================================
+// POST 18 — Q&A prompt (LinkedIn 1200×1200)
+// ============================================================
+const Post18 = () => (
+  <PostFrame w={1200} h={1200} bg={BG} id="18" label="Q&A prompt — LinkedIn">
+    <div style={{position:'absolute', top:72, left:72, right:72, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Eyebrow>LinkedIn · Question</Eyebrow>
+      <Wordmark scale={0.85}/>
+    </div>
+    <div style={{position:'absolute', top:280, left:72, right:72}}>
+      <div style={{fontFamily:SERIF, fontSize:200, lineHeight:0.88, letterSpacing:-5, color:ACCENT, fontWeight:400, fontStyle:'italic'}}>"</div>
+      <div style={{fontFamily:SERIF, fontSize:104, lineHeight:1.02, letterSpacing:-2, color:INK, fontWeight:400, marginTop:-60}}>
+        What's the <span style={{fontStyle:'italic', color:ACCENT}}>one thing</span><br/>
+        you wish someone<br/>
+        had told you before<br/>
+        <span style={{fontStyle:'italic'}}>your first US job?</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:220, left:72, right:72, fontFamily:SERIF, fontStyle:'italic', fontSize:28, color:INK_SOFT}}>
+      Tell us in the comments. ↓
+    </div>
+    <PostFooter handle="Adelante Advisory · LinkedIn" right="adelanteadvisory.com"/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 19 — Cultural moment: salvadoreña pride (4:5)
+// ============================================================
+const Post19 = () => (
+  <PostFrame w={1080} h={1350} bg={INK} id="19" label="Cultural — salvadoreña">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', color:BG}}>
+      <Eyebrow color="rgba(245,241,234,0.7)">From the founders</Eyebrow>
+      <Ornament kind="star"/>
+    </div>
+    <div style={{position:'absolute', top:280, left:64, right:64, color:BG}}>
+      <div style={{fontFamily:SERIF, fontSize:132, lineHeight:0.95, letterSpacing:-3, fontWeight:400}}>
+        Dos <span style={{fontStyle:'italic', color:ACCENT}}>salvadoreñas.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:100, lineHeight:1, letterSpacing:-2, fontWeight:400, marginTop:8, color:'rgba(245,241,234,0.85)', fontStyle:'italic'}}>
+        One in New York.<br/>One in Chicago.
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:260, left:64, right:64, color:BG}}>
+      <div style={{width:48, height:1, background:'rgba(245,241,234,0.4)', marginBottom:28}}/>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:32, lineHeight:1.35, maxWidth:820}}>
+        Building the mentor we wish we'd had.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:'rgba(245,241,234,0.7)', marginTop:16}}>
+        Construyendo la mentora que nos hubiera gustado tener.
+      </div>
+    </div>
+    <PostFooter light/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 20 — Packages announcement (1:1)
+// ============================================================
+const Post20 = () => (
+  <PostFrame w={1080} h={1080} bg={BG} id="20" label="Packages announcement">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <Eyebrow>New · Nuevo</Eyebrow>
+    </div>
+    <div style={{position:'absolute', top:180, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:88, lineHeight:1, letterSpacing:-2, color:INK, fontWeight:400}}>
+        Four ways to<br/>
+        <span style={{fontStyle:'italic', color:ACCENT}}>work with us.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', top:460, left:64, right:64, display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:16}}>
+      {[
+        { name:'Starter',      sessions:'3 sessions',  tag:'Clarity + direction' },
+        { name:'Core',         sessions:'6 sessions',  tag:'Structure + positioning', featured:true },
+        { name:'Acceleration', sessions:'12 sessions', tag:'Execution + momentum' },
+        { name:'Ongoing',      sessions:'20 sessions', tag:'Long-term strategy' },
+      ].map((p, i) => (
+        <div key={i} style={{background: p.featured ? INK : CARD, color: p.featured ? BG : INK, border:`1px solid ${p.featured ? INK : BORDER}`, padding:'22px 24px', borderRadius:4, position:'relative'}}>
+          {p.featured && <div style={{position:'absolute', top:-8, left:18, background:ACCENT, color:BG, padding:'3px 10px', fontSize:10, letterSpacing:1.5, fontFamily:MONO, textTransform:'uppercase', borderRadius:2}}>most popular</div>}
+          <div style={{fontFamily:SERIF, fontSize:34, letterSpacing:-0.8}}>{p.name}</div>
+          <div style={{fontFamily:MONO, fontSize:11, letterSpacing:1.5, color: p.featured ? 'rgba(245,241,234,0.6)' : MUTED, marginTop:2, textTransform:'uppercase'}}>{p.sessions}</div>
+          <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:16, color: p.featured ? BG : ACCENT, marginTop:12}}>{p.tag}</div>
+        </div>
+      ))}
+    </div>
+    <div style={{position:'absolute', bottom:130, left:64, right:64, fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:INK_SOFT}}>
+      Start small. Grow with us. <span style={{color:ACCENT}}>→</span>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 21 — Tip: Coffee chats (4:5)
+// ============================================================
+const Post21 = () => (
+  <PostFrame w={1080} h={1350} bg={BG_ALT} id="21" label="Tip — coffee chats">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <BiRule en="Ritual" es="Ritual"/>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64}}>
+      <div style={{fontFamily:SERIF, fontSize:110, lineHeight:0.98, letterSpacing:-2.5, color:INK, fontWeight:400}}>
+        <span style={{fontStyle:'italic', color:ACCENT}}>3</span> coffee chats<br/>
+        a week.<br/>
+        <span style={{fontStyle:'italic'}}>Every week.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', top:740, left:64, right:64}}>
+      <div style={{width:48, height:1, background:INK, opacity:0.3, marginBottom:28}}/>
+      <div style={{fontFamily:SANS, fontSize:20, lineHeight:1.55, color:INK_SOFT, maxWidth:900}}>
+        Pick three people whose job you'd want in two years. Ask for 20 minutes. You don't need to sell yourself — you need to ask good questions. That's the whole job.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:MUTED, marginTop:20, lineHeight:1.35, maxWidth:900}}>
+        Elige tres personas cuyo trabajo quisieras tener en dos años. Pide 20 minutos. No vendas — pregunta bien.
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 22 — Stat: clients placed (LinkedIn 1:1)
+// ============================================================
+const Post22 = () => (
+  <PostFrame w={1200} h={1200} bg={BG} id="22" label="Stat — placement rate — LinkedIn">
+    <div style={{position:'absolute', top:72, left:72, right:72, display:'flex', justifyContent:'space-between'}}>
+      <Eyebrow>LinkedIn · Milestone</Eyebrow>
+      <Wordmark scale={0.85}/>
+    </div>
+    <div style={{position:'absolute', top:280, left:72, right:72, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:360, lineHeight:1, letterSpacing:-14, color:ACCENT, fontWeight:400, fontStyle:'italic'}}>4×</div>
+    </div>
+    <div style={{position:'absolute', top:720, left:72, right:72, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:52, color:INK, lineHeight:1.1, maxWidth:900, margin:'0 auto', fontWeight:400}}>
+        more interviews after our<br/><span style={{fontStyle:'italic', color:ACCENT}}>résumé rewrite.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:26, color:INK_SOFT, marginTop:28}}>
+        4× más entrevistas después del rewrite.
+      </div>
+    </div>
+    <PostFooter handle="Adelante Advisory · LinkedIn"/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 23 — Final CTA: DMs open (1:1)
+// ============================================================
+const Post23 = () => (
+  <PostFrame w={1080} h={1080} bg={ACCENT} id="23" label="CTA — DMs open">
+    <div style={{position:'absolute', top:64, left:64, right:64, color:BG}}>
+      <Eyebrow color="rgba(245,241,234,0.75)">DMs · Mensajes</Eyebrow>
+    </div>
+    <div style={{position:'absolute', top:220, left:64, right:64, color:BG}}>
+      <div style={{fontFamily:SERIF, fontSize:136, lineHeight:0.95, letterSpacing:-3, fontWeight:400}}>
+        Our DMs<br/>
+        are <span style={{fontStyle:'italic', color:INK}}>open.</span>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:260, left:64, right:64, color:BG}}>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:32, lineHeight:1.3, maxWidth:700, marginBottom:32, color:'rgba(245,241,234,0.92)'}}>
+        Got a career question? We probably got the same one from someone last week.
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:'rgba(245,241,234,0.75)'}}>
+        ¿Tienes una pregunta? Seguramente ya la contestamos.
+      </div>
+    </div>
+    <PostFooter light/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 24 — Vocabulary card: "Adelante" meaning (4:5)
+// ============================================================
+const Post24 = () => (
+  <PostFrame w={1080} h={1350} bg={BG} id="24" label="Vocabulary — Adelante">
+    <div style={{position:'absolute', top:64, left:64, right:64}}>
+      <Eyebrow>Palabra · Word</Eyebrow>
+    </div>
+    <div style={{position:'absolute', top:200, left:64, right:64}}>
+      <div style={{fontFamily:MONO, fontSize:14, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:16}}>
+        ah·deh·LAHN·teh · <span style={{color:ACCENT}}>adv.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:220, lineHeight:0.92, letterSpacing:-6, color:INK, fontWeight:400, fontStyle:'italic'}}>
+        adelante
+      </div>
+    </div>
+    <div style={{position:'absolute', top:620, left:64, right:64}}>
+      <div style={{width:48, height:1, background:INK, opacity:0.3, marginBottom:28}}/>
+      <div style={{display:'flex', gap:32, marginBottom:36}}>
+        <div style={{fontFamily:SERIF, fontSize:20, color:ACCENT, fontStyle:'italic', minWidth:28}}>1.</div>
+        <div>
+          <div style={{fontFamily:SERIF, fontSize:38, color:INK, lineHeight:1.2}}>Forward. Onward.</div>
+          <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:MUTED, marginTop:6}}>Hacia adelante.</div>
+        </div>
+      </div>
+      <div style={{display:'flex', gap:32}}>
+        <div style={{fontFamily:SERIF, fontSize:20, color:ACCENT, fontStyle:'italic', minWidth:28}}>2.</div>
+        <div>
+          <div style={{fontFamily:SERIF, fontSize:38, color:INK, lineHeight:1.2}}>Come in. <span style={{fontStyle:'italic'}}>You're welcome here.</span></div>
+          <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:22, color:MUTED, marginTop:6}}>Pasa adelante. Estás en tu casa.</div>
+        </div>
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+// ============================================================
+// POST 25 — Closing quote / brand (1:1)
+// ============================================================
+const Post25 = () => (
+  <PostFrame w={1080} h={1080} bg={BG} id="25" label="Closing quote">
+    <div style={{position:'absolute', top:64, left:64, right:64, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+      <Wordmark scale={0.95}/>
+      <Ornament kind="star"/>
+    </div>
+    <div style={{position:'absolute', top:260, left:64, right:64, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:300, lineHeight:0.8, letterSpacing:-6, color:ACCENT, fontWeight:400, fontStyle:'italic'}}>"</div>
+    </div>
+    <div style={{position:'absolute', top:440, left:64, right:64, textAlign:'center'}}>
+      <div style={{fontFamily:SERIF, fontSize:58, lineHeight:1.15, letterSpacing:-1, color:INK, fontWeight:400, maxWidth:920, margin:'0 auto'}}>
+        You don't have to figure this out <span style={{fontStyle:'italic', color:ACCENT}}>alone.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:30, color:INK_SOFT, marginTop:40, maxWidth:800, margin:'40px auto 0', lineHeight:1.3}}>
+        No tienes que resolver esto sola.
+      </div>
+    </div>
+    <PostFooter/>
+  </PostFrame>
+);
+
+Object.assign(window, { Post18, Post19, Post20, Post21, Post22, Post23, Post24, Post25 });
+
+
+// ============================================================
+
+// Adelante Advisory — 10 Zoom backgrounds (1920×1080) + LinkedIn banner (1584×396)
+// Reusable, subtle. Meant to sit behind Paty / Diana on calls.
+
+const ZoomFrame = ({ bg = BG, children, id, label }) => (
+  <div data-post-id={id} data-post-label={label} style={{width:1920, height:1080, background:bg, position:'relative', overflow:'hidden', fontFamily:SANS, flexShrink:0, boxShadow:'0 2px 12px rgba(31,43,35,0.08)'}}>
+    {children}
+  </div>
+);
+
+// Subtle wordmark corner — doesn't distract from webcam
+const ZoomBrandCorner = ({ light = false, position = 'bottom-left' }) => {
+  const pos = {
+    'bottom-left':  { bottom:56, left:72 },
+    'bottom-right': { bottom:56, right:72, alignSelf:'flex-end' },
+    'top-right':    { top:56, right:72 },
+    'top-left':     { top:56, left:72 },
+  }[position];
+  return (
+    <div style={{position:'absolute', ...pos, display:'flex', alignItems:'center', gap:12, opacity:0.85}}>
+      <svg width={28} height={28} viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="15" fill="none" stroke={light ? BG : INK} strokeWidth="1.4"/>
+        <path d="M8 19 L16 9 L24 19" fill="none" stroke={ACCENT} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="16" cy="9" r="2.2" fill={ACCENT}/>
+      </svg>
+      <div>
+        <div style={{fontFamily:SERIF, fontSize:22, letterSpacing:-0.3, color: light ? BG : INK}}>Adelante Advisory</div>
+        <div style={{fontFamily:MONO, fontSize:11, letterSpacing:2, color: light ? 'rgba(245,241,234,0.65)' : MUTED, textTransform:'uppercase', marginTop:2}}>adelanteadvisory.com</div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================
+// Z01 — Minimal warm (solid bg, corner wordmark only)
+// ============================================================
+const Zoom01 = () => (
+  <ZoomFrame bg={BG} id="z01" label="Minimal warm">
+    <ZoomBrandCorner/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z02 — Terracotta accent rule — left
+// ============================================================
+const Zoom02 = () => (
+  <ZoomFrame bg={BG} id="z02" label="Terracotta rule left">
+    <div style={{position:'absolute', top:0, bottom:0, left:0, width:16, background:ACCENT}}/>
+    <div style={{position:'absolute', top:0, bottom:0, left:16, width:1, background:BORDER}}/>
+    <ZoomBrandCorner position="bottom-right"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z03 — Deep ink (dark mode — for evening calls)
+// ============================================================
+const Zoom03 = () => (
+  <ZoomFrame bg={INK} id="z03" label="Deep ink">
+    <div style={{position:'absolute', top:0, bottom:0, left:0, width:16, background:ACCENT}}/>
+    <ZoomBrandCorner light position="bottom-right"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z04 — Italic quote (stays visible on call)
+// ============================================================
+const Zoom04 = () => (
+  <ZoomFrame bg={BG_ALT} id="z04" label="Italic quote — adelante">
+    <div style={{position:'absolute', top:0, right:0, width:680, height:'100%', background:BG}}/>
+    <div style={{position:'absolute', top:120, left:96, right:760, color:INK}}>
+      <div style={{fontFamily:MONO, fontSize:13, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:24}}>
+        <span style={{display:'inline-block', width:24, height:1, background:MUTED, verticalAlign:'middle', marginRight:10}}/>
+        A word
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:180, lineHeight:0.9, letterSpacing:-5, color:INK, fontStyle:'italic', fontWeight:400}}>
+        adelante
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:28, color:INK_SOFT, marginTop:32, maxWidth:720, lineHeight:1.3}}>
+        forward. onward. come in — <span style={{color:ACCENT}}>you're welcome here.</span>
+      </div>
+    </div>
+    <ZoomBrandCorner position="bottom-left"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z05 — NY + Chicago (place-based)
+// ============================================================
+const Zoom05 = () => (
+  <ZoomFrame bg={BG} id="z05" label="NY + Chicago">
+    <div style={{position:'absolute', top:180, left:120, right:120, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+      <div>
+        <div style={{fontFamily:MONO, fontSize:13, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:18}}>
+          <span style={{display:'inline-block', width:24, height:1, background:MUTED, verticalAlign:'middle', marginRight:10}}/>
+          Based in
+        </div>
+        <div style={{fontFamily:SERIF, fontSize:120, lineHeight:1, letterSpacing:-3, color:INK, fontStyle:'italic', fontWeight:400}}>
+          New York
+        </div>
+        <div style={{fontFamily:SERIF, fontSize:48, lineHeight:1.2, letterSpacing:-1, color:INK_SOFT, marginTop:12}}>
+          &amp; <span style={{color:ACCENT, fontStyle:'italic'}}>Chicago.</span>
+        </div>
+      </div>
+    </div>
+    <ZoomBrandCorner position="bottom-left"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z06 — Mentor letter texture
+// ============================================================
+const Zoom06 = () => (
+  <ZoomFrame bg={BG} id="z06" label="Letter — mentor">
+    <div style={{position:'absolute', top:140, left:140, fontFamily:SERIF, fontStyle:'italic', fontSize:40, color:INK, lineHeight:1.35, maxWidth:680}}>
+      Hey —<br/>
+      <span style={{color:INK_SOFT}}>we've got you.</span>
+    </div>
+    <div style={{position:'absolute', bottom:180, left:140, fontFamily:SERIF, fontStyle:'italic', fontSize:28, color:ACCENT}}>
+      — Paty &amp; Diana
+    </div>
+    <ZoomBrandCorner position="bottom-right"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z07 — Two-color split
+// ============================================================
+const Zoom07 = () => (
+  <ZoomFrame bg={BG} id="z07" label="Split — off-white / tint">
+    <div style={{position:'absolute', top:0, bottom:0, right:0, width:'42%', background:'#E8D4C4'}}/>
+    <div style={{position:'absolute', top:0, bottom:0, left:'58%', width:1, background:BORDER}}/>
+    <ZoomBrandCorner position="bottom-left"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z08 — Subtle grid paper (for workshop calls)
+// ============================================================
+const Zoom08 = () => (
+  <ZoomFrame bg={BG} id="z08" label="Workshop grid">
+    <div style={{position:'absolute', inset:0, backgroundImage:`linear-gradient(${BORDER} 1px, transparent 1px), linear-gradient(90deg, ${BORDER} 1px, transparent 1px)`, backgroundSize:'64px 64px', opacity:0.5}}/>
+    <div style={{position:'absolute', top:120, left:120, fontFamily:SERIF, fontSize:88, lineHeight:1, letterSpacing:-2, color:INK, fontWeight:400}}>
+      <span style={{fontStyle:'italic', color:ACCENT}}>1:1</span> session
+    </div>
+    <div style={{position:'absolute', top:230, left:120, fontFamily:SERIF, fontStyle:'italic', fontSize:30, color:INK_SOFT}}>
+      Résumé · Interview · Strategy
+    </div>
+    <ZoomBrandCorner position="bottom-right"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z09 — Big "ADELANTE" letterform (for brand moments)
+// ============================================================
+const Zoom09 = () => (
+  <ZoomFrame bg={BG} id="z09" label="Big letterform">
+    <div style={{position:'absolute', top:-40, left:-20, fontFamily:SERIF, fontSize:720, lineHeight:0.85, letterSpacing:-30, color:'rgba(31,43,35,0.06)', fontStyle:'italic', fontWeight:400, whiteSpace:'nowrap'}}>
+      adelante
+    </div>
+    <div style={{position:'absolute', bottom:120, right:120, textAlign:'right', fontFamily:SERIF, fontStyle:'italic', fontSize:48, color:ACCENT, letterSpacing:-1}}>
+      your career,<br/>
+      <span style={{color:INK}}>finally mapped out.</span>
+    </div>
+    <ZoomBrandCorner position="bottom-left"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// Z10 — Bilingual intro (great for intro calls)
+// ============================================================
+const Zoom10 = () => (
+  <ZoomFrame bg={BG} id="z10" label="Bilingual welcome">
+    <div style={{position:'absolute', top:140, left:120, right:120, display:'flex', alignItems:'baseline', gap:80}}>
+      <div>
+        <div style={{fontFamily:MONO, fontSize:13, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:20}}>
+          <span style={{display:'inline-block', width:24, height:1, background:MUTED, verticalAlign:'middle', marginRight:10}}/>
+          EN
+        </div>
+        <div style={{fontFamily:SERIF, fontSize:88, lineHeight:0.98, letterSpacing:-2, color:INK, fontWeight:400}}>
+          Welcome.
+        </div>
+      </div>
+      <div>
+        <div style={{fontFamily:MONO, fontSize:13, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:20}}>
+          <span style={{display:'inline-block', width:24, height:1, background:MUTED, verticalAlign:'middle', marginRight:10}}/>
+          ES
+        </div>
+        <div style={{fontFamily:SERIF, fontSize:88, lineHeight:0.98, letterSpacing:-2, color:ACCENT, fontStyle:'italic', fontWeight:400}}>
+          Bienvenidxs.
+        </div>
+      </div>
+    </div>
+    <div style={{position:'absolute', bottom:200, left:120, right:120, fontFamily:SERIF, fontStyle:'italic', fontSize:28, color:INK_SOFT, maxWidth:900}}>
+      Take your time. We can do this in English or en español — whatever feels like home.
+    </div>
+    <ZoomBrandCorner position="bottom-right"/>
+  </ZoomFrame>
+);
+
+// ============================================================
+// LinkedIn banner (1584×396)
+// ============================================================
+const LinkedInBanner = () => (
+  <div data-post-id="linkedin-banner" data-post-label="LinkedIn banner" style={{width:1584, height:396, background:BG, position:'relative', overflow:'hidden', fontFamily:SANS, flexShrink:0, boxShadow:'0 2px 12px rgba(31,43,35,0.08)'}}>
+    <div style={{position:'absolute', top:0, bottom:0, left:0, width:8, background:ACCENT}}/>
+    <div style={{position:'absolute', top:0, bottom:0, right:0, width:'36%', background:'#E8D4C4'}}/>
+    <div style={{position:'absolute', top:0, bottom:0, right:'36%', width:1, background:BORDER}}/>
+    <div style={{position:'absolute', top:68, left:80}}>
+      <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:28}}>
+        <svg width={36} height={36} viewBox="0 0 32 32">
+          <circle cx="16" cy="16" r="15" fill="none" stroke={INK} strokeWidth="1.4"/>
+          <path d="M8 19 L16 9 L24 19" fill="none" stroke={ACCENT} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="16" cy="9" r="2.2" fill={ACCENT}/>
+        </svg>
+        <div style={{fontFamily:SERIF, fontSize:32, letterSpacing:-0.3, color:INK}}>Adelante Advisory</div>
+        <div style={{fontFamily:MONO, fontSize:12, color:MUTED, letterSpacing:2, textTransform:'uppercase', marginTop:6}}>EST. 2026</div>
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:72, lineHeight:1, letterSpacing:-1.5, color:INK, fontWeight:400, marginBottom:12}}>
+        Your career, <span style={{fontStyle:'italic', color:ACCENT}}>finally mapped out.</span>
+      </div>
+      <div style={{fontFamily:SERIF, fontStyle:'italic', fontSize:24, color:INK_SOFT}}>
+        Career coaching for Latin Americans navigating US corporate life.
+      </div>
+    </div>
+    <div style={{position:'absolute', top:140, right:80, textAlign:'right'}}>
+      <div style={{fontFamily:MONO, fontSize:12, letterSpacing:2, color:MUTED, textTransform:'uppercase', marginBottom:14}}>
+        Based in
+      </div>
+      <div style={{fontFamily:SERIF, fontSize:52, lineHeight:1, letterSpacing:-1.2, color:INK, fontStyle:'italic', fontWeight:400}}>
+        New York<br/>
+        <span style={{color:ACCENT}}>&amp; Chicago</span>
+      </div>
+      <div style={{fontFamily:MONO, fontSize:12, letterSpacing:1.5, color:MUTED, marginTop:22, textTransform:'uppercase'}}>
+        adelanteadvisory.com
+      </div>
+    </div>
+  </div>
+);
+
+Object.assign(window, {
+  Zoom01, Zoom02, Zoom03, Zoom04, Zoom05, Zoom06, Zoom07, Zoom08, Zoom09, Zoom10,
+  LinkedInBanner,
+});
+
+</script>
+
+<script type="text/babel" data-presets="react">
+// ------------------------------------------------------------------
+// Thumb — renders a post at full size then scales it to fit a cell.
+// ------------------------------------------------------------------
+function Thumb({ Component, w, h, targetW, label, sizeTag, id }) {
+  const scale = targetW / w;
+  const scaledH = h * scale;
+  return (
+    <div className="thumb">
+      <div className="thumb-canvas" style={{width:targetW, height:scaledH}}>
+        <div className="thumb-inner" style={{transform:`scale(${scale})`, width:w, height:h}}>
+          <Component/>
+        </div>
+      </div>
+      <div className="thumb-meta">
+        <span className="thumb-label">{label}</span>
+        <span>{sizeTag} · #{id}</span>
+      </div>
+    </div>
+  );
+}
+
+const POSTS = [
+  // id, Component, w, h, label, sizeTag
+  ['01', Post01, 1080, 1080, 'Hero intro', 'IG 1:1'],
+  ['02', Post02, 1080, 1080, 'Stat — 250 apps', 'IG 1:1'],
+  ['03', Post03, 1080, 1350, 'Myth · networking', 'IG 4:5'],
+  ['04', Post04, 1080, 1350, 'Carousel cover — 5 things', 'IG 4:5 · Carousel'],
+  ['05', Post05, 1080, 1350, 'Carousel 02 — networking', 'IG 4:5 · Carousel'],
+  ['06', Post06, 1080, 1350, 'Carousel 03 — résumé', 'IG 4:5 · Carousel'],
+  ['07', Post07, 1080, 1350, 'Carousel 04 — self-advocacy', 'IG 4:5 · Carousel'],
+  ['08', Post08, 1080, 1350, 'Carousel 05 — negotiate', 'IG 4:5 · Carousel'],
+  ['09', Post09, 1080, 1350, 'Carousel end — CTA', 'IG 4:5 · Carousel'],
+  ['10', Post10, 1080, 1080, 'CTA — 15 minutes', 'IG 1:1'],
+  ['11', Post11, 1080, 1350, 'Founder — Paty', 'IG 4:5'],
+  ['12', Post12, 1080, 1350, 'Founder — Diana', 'IG 4:5'],
+  ['13', Post13, 1080, 1080, 'Myth · negotiate', 'IG 1:1'],
+  ['14', Post14, 1080, 1080, 'Stat — 9 weeks', 'IG 1:1'],
+  ['15', Post15, 1080, 1350, 'Cover — résumé tips', 'IG 4:5 · Carousel'],
+  ['16', Post16, 1080, 1350, 'Tip — verbs', 'IG 4:5 · Carousel'],
+  ['17', Post17, 1080, 1350, 'Tip — one page', 'IG 4:5 · Carousel'],
+  ['18', Post18, 1200, 1200, 'Q&A prompt', 'LinkedIn 1:1'],
+  ['19', Post19, 1080, 1350, 'Cultural — salvadoreñas', 'IG 4:5'],
+  ['20', Post20, 1080, 1080, 'Packages announcement', 'IG 1:1'],
+  ['21', Post21, 1080, 1350, 'Tip — coffee chats', 'IG 4:5'],
+  ['22', Post22, 1200, 1200, 'Stat — 4× interviews', 'LinkedIn 1:1'],
+  ['23', Post23, 1080, 1080, 'CTA — DMs open', 'IG 1:1'],
+  ['24', Post24, 1080, 1350, 'Vocab — adelante', 'IG 4:5'],
+  ['25', Post25, 1080, 1080, 'Closing quote', 'IG 1:1'],
+];
+
+const ZOOMS = [
+  ['z01', Zoom01, 'Minimal warm'],
+  ['z02', Zoom02, 'Terracotta rule'],
+  ['z03', Zoom03, 'Deep ink'],
+  ['z04', Zoom04, 'Italic quote'],
+  ['z05', Zoom05, 'NY + Chicago'],
+  ['z06', Zoom06, 'Letter — Paty & Diana'],
+  ['z07', Zoom07, 'Color split'],
+  ['z08', Zoom08, 'Workshop grid'],
+  ['z09', Zoom09, 'Big letterform'],
+  ['z10', Zoom10, 'Bilingual welcome'],
+];
+
+const ICONS = [
+  ['arrow-forward', 'Arrow', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 24 L38 24"/><path d="M28 14 L38 24 L28 34"/></g></svg>'],
+  ['pin-location', 'Pin', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6 C16 6 10 12 10 20 C10 30 24 42 24 42 C24 42 38 30 38 20 C38 12 32 6 24 6 Z"/><circle cx="24" cy="20" r="4" fill="#C45A3B" stroke="none"/></g></svg>'],
+  ['envelope', 'Envelope', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="36" height="24" rx="2"/><path d="M6 14 L24 28 L42 14"/><circle cx="38" cy="36" r="2" fill="#C45A3B" stroke="none"/></g></svg>'],
+  ['mountain-path', 'Mountain', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M10 32 L24 14 L38 32" stroke="#C45A3B"/><circle cx="24" cy="14" r="2.6" fill="#C45A3B" stroke="none"/></g></svg>'],
+  ['speech-bubble', 'Speech', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10 L40 10 Q42 10 42 12 L42 30 Q42 32 40 32 L20 32 L12 40 L12 32 L8 32 Q6 32 6 30 L6 12 Q6 10 8 10 Z"/><circle cx="18" cy="21" r="1.6" fill="#C45A3B" stroke="none"/><circle cx="24" cy="21" r="1.6" fill="#C45A3B" stroke="none"/><circle cx="30" cy="21" r="1.6" fill="#C45A3B" stroke="none"/></g></svg>'],
+  ['star-sparkle', 'Star', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8 L27 20 L38 23 L27 26 L24 38 L21 26 L10 23 L21 20 Z" fill="#C45A3B" stroke="#C45A3B"/><path d="M38 10 L39.5 13 L42.5 14.5 L39.5 16 L38 19 L36.5 16 L33.5 14.5 L36.5 13 Z" fill="#1F2B23" stroke="none"/></g></svg>'],
+  ['handshake', 'Handshake', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><g fill="none" stroke="#1F2B23" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 L14 14 L24 18 L34 14 L44 20"/><path d="M14 14 L14 30 Q14 34 18 34 L30 34 Q34 34 34 30 L34 14"/><path d="M20 26 L24 30 L28 26" stroke="#C45A3B"/></g></svg>'],
+];
+
+function App() {
+  return (
+    <div data-screen-label="Adelante social kit">
+      <div className="download-note">
+        <div>
+          <div className="title">Ready to post.</div>
+          <div className="sub">Everything below renders at full export resolution. Screenshot any card or ask Claude to export PNGs of the whole set.</div>
+        </div>
+        <div className="cta">25 posts · 10 zooms · 1 banner</div>
+      </div>
+
+      <section className="section">
+        <div className="section-head">
+          <div>
+            <h2>Instagram <em>posts</em></h2>
+            <div className="lede">Mix of 1:1 square, 4:5 carousels, LinkedIn 1:1. Bilingual EN/ES on every card.</div>
+          </div>
+          <div className="sub">25 posts</div>
+        </div>
+        <div className="grid grid-sq">
+          {POSTS.map(([id, C, w, h, label, tag]) => (
+            <Thumb key={id} id={id} Component={C} w={w} h={h} targetW={400} label={label} sizeTag={tag}/>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-head">
+          <div>
+            <h2>Zoom <em>backgrounds</em></h2>
+            <div className="lede">1920×1080 · sit behind Paty &amp; Diana on calls. Solid enough to read, quiet enough not to distract.</div>
+          </div>
+          <div className="sub">10 backgrounds</div>
+        </div>
+        <div className="grid grid-ls">
+          {ZOOMS.map(([id, C, label]) => (
+            <Thumb key={id} id={id} Component={C} w={1920} h={1080} targetW={560} label={label} sizeTag="1920×1080"/>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-head">
+          <div>
+            <h2>LinkedIn <em>banner</em></h2>
+            <div className="lede">1584×396 · the exact size LinkedIn wants for a company/personal header.</div>
+          </div>
+          <div className="sub">1 banner</div>
+        </div>
+        <div className="grid grid-banner">
+          <Thumb id="banner" Component={LinkedInBanner} w={1584} h={396} targetW={1200} label="Adelante — LinkedIn header" sizeTag="1584×396"/>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-head">
+          <div>
+            <h2>Reusable <em>icons</em></h2>
+            <div className="lede">7 SVG icons using the Adelante stroke / accent pattern. Drop them into posts, decks, stories — or export as PNG.</div>
+          </div>
+          <div className="sub">7 icons · SVG</div>
+        </div>
+        <div className="grid grid-icons">
+          {ICONS.map(([slug, label, svg]) => (
+            <div key={slug} className="icon-card">
+              <div dangerouslySetInnerHTML={{__html: svg}}/>
+              <div className="name">{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

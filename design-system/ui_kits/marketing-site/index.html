@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Adelante Advisory — marketing site UI kit</title>
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='none' stroke='%231F2B23' stroke-width='1.4'/><path d='M8 19 L16 9 L24 19' fill='none' stroke='%23C45A3B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='9' r='2.2' fill='%23C45A3B'/></svg>">
+<style id="adelante-tokens">
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#F5F1EA;--bg-alt:#ECE5D8;--card-bg:#FCF8F1;--ink:#1F2B23;--ink-soft:#3D4A40;
+  --muted:#7A7568;--border:rgba(31,43,35,0.15);--accent:#C45A3B;--accent-ink:#FCF8F1;
+  --font-display:"Instrument Serif","Times New Roman",serif;
+  --font-body:"Inter Tight",-apple-system,system-ui,sans-serif;
+  --font-mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+button{font-family:inherit}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const EN = {
+  nav: { about: 'About', services: 'Services', how: 'How it works', packages: 'Packages', faq: 'FAQ', book: 'Book a free call' },
+  hero: {
+    eyebrow: 'Career strategy for Latin Americans in the US',
+    title: ['Your career,', 'finally ', 'mapped out.'],
+    sub: "From graduation to your first promotion — we're two salvadoreñas who've been there. We help students and young professionals from El Salvador and Latin America navigate US corporate life with clarity.",
+    cta: 'Book a free 15-min call',
+    ctaSub: 'No pitch. Just a conversation.',
+    trust: 'Trusted experience from',
+  },
+  problem: {
+    eyebrow: 'The Problem',
+    title: "You shouldn't have to figure this out alone.",
+    body: [
+      "Growing up in El Salvador, nobody teaches you how US corporate works. No one tells you what a résumé is supposed to sound like here. No one shows you how to network when networking isn't really a thing back home.",
+      "You apply to hundreds of jobs and hear nothing back. You walk into interviews unsure of how much to talk about yourself. You get a job and suddenly you're expected to 'advocate for yourself' in rooms where nobody looks like you.",
+      "We've been there. And we built Adelante so you don't have to guess.",
+    ],
+  },
+  services: {
+    eyebrow: 'What we do',
+    title: 'Everything you wish someone had told you.',
+    items: [
+      { k: '01', t: 'Career strategy & direction', d: '1:1 coaching to figure out what you actually want — not just what looks good on LinkedIn.' },
+      { k: '02', t: 'Résumé review & rewrite', d: "We'll rewrite yours to sound like a US hiring manager wrote it — without losing your story." },
+      { k: '03', t: 'Interview prep & mock interviews', d: "Behavioral, technical, case. We'll run drills until you walk in calm." },
+      { k: '04', t: 'Job search strategy', d: 'Where to apply, how often, how to track, how to not lose your mind.' },
+      { k: '05', t: 'Networking coaching', d: 'Cold outreach, coffee chats, informational interviews. How to do it without feeling weird.' },
+      { k: '06', t: 'College-to-corporate transition', d: 'The unspoken rules of a US office — and how to thrive without losing yourself.' },
+      { k: '07', t: 'Salary negotiation', d: "Yes, you can negotiate. No, you won't lose the offer. Here's exactly how." },
+    ],
+  },
+  about: {
+    eyebrow: 'About us',
+    title: 'Built from experience, not theory.',
+    intro: "We're Paty and Diana — both salvadoreñas, both American School alumnae, both seven years into our corporate careers in the US. We built Adelante because we kept getting the same DMs from students and friends back home: 'How did you do it?' This is our answer.",
+    paty: { name: 'Paty Vega', role: 'Product Marketing Manager', company: 'S&P Global · New York', bio: 'Based in New York. Seven years in product marketing across finance and data. I coach on storytelling, positioning, and how to make corporate recruiters actually read your application.', linkedin: 'https://linkedin.com/in/pvega17' },
+    diana: { name: 'Diana Valladares', role: 'Senior Consultant, Data Engineering & Architecture', company: 'AArete · Chicago', bio: 'Based in Chicago. 4+ years in Consulting, Data Analytics & Engineering, and AI. I coach on technical interviews, consulting recruiting, and breaking into data roles.', linkedin: 'https://linkedin.com/in/diana-valladares' },
+  },
+  how: {
+    eyebrow: 'How it works', title: 'Simple. No pressure.',
+    steps: [
+      { n: '01', t: 'Book a free 15-min call', d: "Pick Paty or Diana. We'll chat about where you are and where you want to go." },
+      { n: '02', t: 'We build your plan', d: 'Together we map out the right package and the right focus — résumé, interviews, networking, all of it.' },
+      { n: '03', t: 'We work 1:1', d: 'Sessions over Zoom. Real feedback, real prep, real progress. In English or Spanish — your choice.' },
+      { n: '04', t: 'You land it', d: 'The interview, the offer, the promotion. Adelante.' },
+    ],
+  },
+  packages: {
+    eyebrow: 'Ways to work together', title: 'Start small. Grow with us.',
+    items: [
+      { name: 'Starter', sessions: '3 sessions', tag: 'Clarity + direction', bullets: ['Understand where to focus', 'Initial profile guidance', 'Clear next steps'] },
+      { name: 'Core', sessions: '6 sessions', tag: 'Structure + positioning', featured: true, bullets: ['Build narrative and direction', 'Résumé and LinkedIn rewrite', 'Strategic job search plan'] },
+      { name: 'Acceleration', sessions: '12 sessions', tag: 'Execution + momentum', bullets: ['Targeted outreach and positioning', 'Interview prep cycles', 'Navigating real opportunities'] },
+      { name: 'Ongoing', sessions: '20 sessions', tag: 'Long-term strategy', bullets: ['Continued guidance', 'Quarterly check-ins', 'Accountability and growth'] },
+    ],
+    cta: 'Inquire about pricing',
+  },
+  booking: { eyebrow: 'Book your free call', title: 'Pick who you want to talk to.', sub: '15 minutes. No commitment. In English or en español.' },
+  faq: {
+    eyebrow: 'FAQ', title: 'Questions, answered.',
+    items: [
+      { q: 'Do I have to be from El Salvador?', a: "No. We're Salvadoran so that's the community we know best, but we work with students and young professionals from across Latin America (and plenty of first-gen folks who just need real talk)." },
+      { q: 'Can we do sessions in Spanish?', a: 'Sí, claro. Sessions, feedback, résumé reviews — whatever language you think in best. Many of our clients go back and forth.' },
+      { q: "I'm still in college. Is it too early?", a: "No — it's the best time. Your résumé starts before graduation. The earlier we build direction, the stronger your profile gets." },
+      { q: 'I already have a job. Is this for me?', a: 'Yes. We work with people one, three, even five years in — navigating promotions, switching industries, or making the jump from IC to manager.' },
+      { q: 'Do you help with visas, OPT, or H1B?', a: "We don't give legal advice, but we've both navigated the US work authorization maze and can share what worked for us and our clients." },
+      { q: 'How much does it cost?', a: "Packages vary depending on sessions and focus. Book the free 15-min call and we'll talk pricing — honestly and without pressure." },
+    ],
+  },
+  footer: { tagline: 'Your career, finally mapped out.', contact: 'adelanteadvisory@gmail.com', made: 'Made with cariño in New York & Chicago' },
+};
+
+const ES = {
+  nav: { about: 'Nosotras', services: 'Servicios', how: 'Cómo funciona', packages: 'Paquetes', faq: 'Preguntas', book: 'Agenda tu llamada' },
+  hero: {
+    eyebrow: 'Estrategia de carrera para latinos en EE.UU.',
+    title: ['Tu carrera,', 'por fin ', 'con rumbo.'],
+    sub: 'De la graduación a tu primer ascenso — somos dos salvadoreñas que ya pasamos por ahí. Ayudamos a estudiantes y jóvenes profesionales de El Salvador y Latinoamérica a navegar el mundo corporativo en EE.UU. con claridad.',
+    cta: 'Agenda una llamada gratis de 15 min', ctaSub: 'Sin presión. Solo una conversación.', trust: 'Experiencia de',
+  },
+  problem: {
+    eyebrow: 'El problema', title: 'No tienes que resolver esto sola.',
+    body: [
+      'Creciendo en El Salvador, nadie te enseña cómo funciona el mundo corporativo en EE.UU. Nadie te dice cómo debe sonar un résumé aquí. Nadie te muestra cómo hacer networking cuando eso ni existe allá.',
+      'Aplicas a cientos de trabajos y no recibes respuesta. Llegas a entrevistas sin saber cuánto hablar de ti. Consigues el trabajo y de repente te piden que "hables por ti misma" en salas donde nadie se parece a ti.',
+      'Nosotras pasamos por eso. Por eso creamos Adelante — para que tú no tengas que adivinar.',
+    ],
+  },
+  services: {
+    eyebrow: 'Lo que hacemos', title: 'Todo lo que hubieras querido que alguien te dijera.',
+    items: [
+      { k: '01', t: 'Estrategia y dirección', d: 'Coaching 1:1 para descubrir qué quieres de verdad — no solo lo que se ve bien en LinkedIn.' },
+      { k: '02', t: 'Revisión de résumé', d: 'Lo reescribimos para que suene como si lo hubiera escrito un recruiter gringo — sin perder tu historia.' },
+      { k: '03', t: 'Preparación de entrevistas', d: 'Comportamiento, técnicas, casos. Practicamos hasta que entres con calma.' },
+      { k: '04', t: 'Estrategia de búsqueda', d: 'Dónde aplicar, con qué frecuencia, cómo llevar registro, cómo no volverte loca.' },
+      { k: '05', t: 'Networking', d: 'Outreach en frío, coffee chats, entrevistas informativas. Cómo hacerlo sin sentirte rara.' },
+      { k: '06', t: 'De universidad a corporativo', d: 'Las reglas no escritas de una oficina en EE.UU. — y cómo prosperar sin perderte.' },
+      { k: '07', t: 'Negociación salarial', d: 'Sí puedes negociar. No vas a perder la oferta. Aquí cómo hacerlo.' },
+    ],
+  },
+  about: {
+    eyebrow: 'Nosotras', title: 'Construido desde la experiencia.',
+    intro: 'Somos Paty y Diana — salvadoreñas, exalumnas de la Escuela Americana, con siete años de carrera corporativa en EE.UU. Creamos Adelante porque nos llegaban los mismos DMs de estudiantes y amigos: "¿Cómo lo lograste?" Esta es nuestra respuesta.',
+    paty: { name: 'Paty Vega', role: 'Product Marketing Manager', company: 'S&P Global · Nueva York', bio: 'Basada en Nueva York. Siete años en marketing de producto en finanzas y datos. Te ayudo con storytelling, posicionamiento, y cómo lograr que un recruiter corporativo de verdad lea tu aplicación.', linkedin: 'https://linkedin.com/in/pvega17' },
+    diana: { name: 'Diana Valladares', role: 'Senior Consultant, Data Engineering & Architecture', company: 'AArete · Chicago', bio: 'Basada en Chicago. 4+ años de experiencia en Consultoría, Análisis e Ingeniería de Datos, e Inteligencia Artificial. Te ayudo con entrevistas técnicas, recruiting de consultoría, y cómo entrar a roles de data.', linkedin: 'https://linkedin.com/in/diana-valladares' },
+  },
+  how: {
+    eyebrow: 'Cómo funciona', title: 'Simple. Sin presión.',
+    steps: [
+      { n: '01', t: 'Agenda llamada gratis', d: 'Elige a Paty o Diana. Platicamos de dónde estás y a dónde quieres llegar.' },
+      { n: '02', t: 'Armamos tu plan', d: 'Juntas decidimos el paquete y el enfoque — résumé, entrevistas, networking, todo.' },
+      { n: '03', t: 'Trabajamos 1:1', d: 'Sesiones por Zoom. Feedback real, prep real, progreso real. En inglés o español.' },
+      { n: '04', t: 'Lo logras', d: 'La entrevista, la oferta, el ascenso. Adelante.' },
+    ],
+  },
+  packages: {
+    eyebrow: 'Cómo trabajar con nosotras', title: 'Empieza pequeño. Crece con nosotras.',
+    items: [
+      { name: 'Starter', sessions: '3 sesiones', tag: 'Claridad + dirección', bullets: ['Entender dónde enfocarte', 'Orientación inicial de perfil', 'Próximos pasos claros'] },
+      { name: 'Core', sessions: '6 sesiones', tag: 'Estructura + posicionamiento', featured: true, bullets: ['Construir narrativa y dirección', 'Rewrite de résumé y LinkedIn', 'Plan estratégico de búsqueda'] },
+      { name: 'Acceleration', sessions: '12 sesiones', tag: 'Ejecución + momentum', bullets: ['Outreach y posicionamiento dirigido', 'Ciclos de preparación de entrevistas', 'Navegar oportunidades reales'] },
+      { name: 'Ongoing', sessions: '20 sesiones', tag: 'Estrategia de largo plazo', bullets: ['Acompañamiento continuo', 'Check-ins trimestrales', 'Accountability y crecimiento'] },
+    ],
+    cta: 'Consultar precios',
+  },
+  booking: { eyebrow: 'Agenda tu llamada gratis', title: 'Elige con quién quieres hablar.', sub: '15 minutos. Sin compromiso. En inglés o en español.' },
+  faq: {
+    eyebrow: 'Preguntas frecuentes', title: 'Respuestas claras.',
+    items: [
+      { q: '¿Tengo que ser de El Salvador?', a: 'No. Somos salvadoreñas y es la comunidad que mejor conocemos, pero trabajamos con estudiantes y profesionales de toda Latinoamérica.' },
+      { q: '¿Pueden ser las sesiones en español?', a: 'Sí, claro. Sesiones, feedback, revisiones — en el idioma en que pienses mejor.' },
+      { q: 'Todavía estoy en la universidad. ¿Es muy temprano?', a: 'No — es el mejor momento. Tu résumé empieza antes de graduarte.' },
+      { q: 'Ya tengo trabajo. ¿Me sirve?', a: 'Sí. Trabajamos con gente con uno, tres, hasta cinco años de experiencia.' },
+      { q: '¿Ayudan con visas, OPT, o H1B?', a: 'No damos consejo legal, pero ambas navegamos el tema y compartimos lo que funcionó.' },
+      { q: '¿Cuánto cuesta?', a: 'Los paquetes varían según las sesiones y el enfoque. Agenda la llamada gratis y te contamos.' },
+    ],
+  },
+  footer: { tagline: 'Tu carrera, por fin con rumbo.', contact: 'adelanteadvisory@gmail.com', made: 'Hecho con cariño en Nueva York y Chicago' },
+};
+
+const ADVISORS = [
+  { id: 'paty', initials: 'PV', tintLight: '#E8D4C4', tintDark: '#8B4A2F', cityEn: 'New York', cityEs: 'Nueva York',
+    companyEn: 'S&P Global · New York', companyEs: 'S&P Global · Nueva York',
+    specialtyEn: 'Marketing · Finance · Storytelling', specialtyEs: 'Marketing · Finanzas · Storytelling',
+    calendly: 'https://calendly.com/adelanteadvisory/15-min-paty', linkedin: 'https://linkedin.com/in/pvega17' },
+  { id: 'diana', initials: 'DV', tintLight: '#D6DFD4', tintDark: '#3F5A4C', cityEn: 'Chicago', cityEs: 'Chicago',
+    companyEn: 'AArete · Chicago', companyEs: 'AArete · Chicago',
+    specialtyEn: 'Consulting · Data · Technical interviews · AI', specialtyEs: 'Consultoría · Data · Entrevistas técnicas · IA',
+    calendly: 'https://calendly.com/adelanteadvisory/15-min-diana', linkedin: 'https://linkedin.com/in/diana-valladares' },
+];
+
+const TRUSTED = ['SICPA', 'S&P Global', 'AArete', 'Daarwill'];
+const CONTACT_EMAIL = 'adelanteadvisory@gmail.com';
+
+Object.assign(window, { EN, ES, ADVISORS, TRUSTED, CONTACT_EMAIL });
+
+// Small helpers shared across components. Attach to window.
+const Eyebrow = ({ children, color }) => (
+  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: color || 'var(--muted)', marginBottom: 20 }}>{children}</div>
+);
+
+const EyebrowWithRule = ({ children }) => (
+  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
+    <span style={{ width: 32, height: 1, background: 'var(--muted)' }} />
+    {children}
+  </div>
+);
+
+const Section = ({ id, bg, color, pad, children }) => (
+  <section id={id} style={{ padding: pad || '120px 48px', background: bg || 'transparent', color: color || 'inherit' }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto' }}>{children}</div>
+  </section>
+);
+
+function Nav({ c, lang, setLang }) {
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const items = [['about', c.nav.about], ['services', c.nav.services], ['how', c.nav.how], ['packages', c.nav.packages], ['faq', c.nav.faq]];
+  return (
+    <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(245,241,234,0.92)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', borderBottom: '1px solid var(--border)', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <svg width="26" height="26" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="none" stroke="#1F2B23" strokeWidth="1.4"/><path d="M8 19 L16 9 L24 19" fill="none" stroke="#C45A3B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="16" cy="9" r="2.2" fill="#C45A3B"/></svg>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: -0.3 }}>Adelante</span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)', letterSpacing: 1.5, marginLeft: 2, marginTop: 4 }}>ADVISORY</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+        {items.map(([id, label]) => (
+          <button key={id} onClick={() => scrollTo(id)} style={{ background: 'transparent', border: 'none', fontSize: 13, color: 'var(--ink)', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 500 }}>{label}</button>
+        ))}
+        <div style={{ display: 'inline-flex', gap: 2, border: '1px solid var(--border)', padding: 2, borderRadius: 4, background: 'var(--bg)' }}>
+          {['en', 'es'].map(l => (
+            <button key={l} onClick={() => setLang(l)} style={{ background: lang === l ? 'var(--ink)' : 'transparent', color: lang === l ? 'var(--bg)' : 'var(--ink)', border: 'none', padding: '4px 10px', fontSize: 11, letterSpacing: 1, fontFamily: 'var(--font-mono)', fontWeight: 500, cursor: 'pointer', borderRadius: 2, textTransform: 'uppercase' }}>{l}</button>
+          ))}
+        </div>
+        <button onClick={() => scrollTo('booking')} style={{ background: 'var(--ink)', color: 'var(--bg)', border: 'none', padding: '9px 18px', fontSize: 13, fontWeight: 500, borderRadius: 4, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>{c.nav.book} →</button>
+      </div>
+    </nav>
+  );
+}
+
+function AdvisorPhotoFrame({ advisor, city, rotate, offsetTop, size }) {
+  const w = size?.w || 280, h = size?.h || 340;
+  return (
+    <div style={{ width: w, height: h, background: advisor.tintLight, border: '1px solid var(--border)', boxShadow: '0 2px 12px rgba(31,43,35,0.08)', padding: 12, transform: `rotate(${rotate})`, marginTop: offsetTop, flexShrink: 0, position: 'relative', overflow: 'hidden', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: 140, color: 'rgba(31,43,35,0.18)', letterSpacing: -4, lineHeight: 1, marginBottom: -12 }}>{advisor.initials}</div>
+      </div>
+      <div style={{ position: 'absolute', bottom: 10, left: 14, fontFamily: 'var(--font-display)', fontSize: 20, fontStyle: 'italic', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>{city}</div>
+    </div>
+  );
+}
+
+function Hero({ c, lang }) {
+  return (
+    <>
+      <section style={{ padding: '96px 48px 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 64, alignItems: 'end' }}>
+          <div>
+            <EyebrowWithRule>{c.hero.eyebrow}</EyebrowWithRule>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(64px, 8vw, 128px)', lineHeight: 0.95, letterSpacing: -2.5, margin: '0 0 32px', fontWeight: 400, color: 'var(--ink)' }}>
+              {c.hero.title[0]}<br />
+              <span style={{ fontStyle: 'italic' }}>{c.hero.title[1]}</span>
+              <span style={{ color: 'var(--accent)' }}>{c.hero.title[2]}</span>
+            </h1>
+            <p style={{ fontSize: 19, lineHeight: 1.55, color: 'var(--ink-soft)', maxWidth: 580, margin: '0 0 40px' }}>{c.hero.sub}</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+              <button onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'var(--accent)', color: 'var(--accent-ink)', border: 'none', padding: '18px 28px', fontSize: 15, fontWeight: 500, borderRadius: 4, cursor: 'pointer', fontFamily: 'var(--font-body)', letterSpacing: 0.2 }}>{c.hero.cta} →</button>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--muted)', letterSpacing: 0.5 }}>{c.hero.ctaSub}</span>
+            </div>
+          </div>
+          <div style={{ position: 'relative', height: 440, display: 'flex', gap: 18, alignItems: 'center', justifyContent: 'center' }}>
+            <AdvisorPhotoFrame advisor={ADVISORS[0]} city={lang === 'es' ? ADVISORS[0].cityEs : ADVISORS[0].cityEn} rotate="-1.5deg" offsetTop={0} />
+            <AdvisorPhotoFrame advisor={ADVISORS[1]} city={lang === 'es' ? ADVISORS[1].cityEs : ADVISORS[1].cityEn} rotate="1.5deg" offsetTop={24} />
+          </div>
+        </div>
+      </section>
+      <section style={{ padding: '24px 48px 72px', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 48, flexWrap: 'wrap' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--muted)' }}>{c.hero.trust}</div>
+          <div style={{ display: 'flex', gap: 36, flexWrap: 'wrap', flex: 1 }}>
+            {TRUSTED.map(co => (
+              <span key={co} style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--ink-soft)', fontStyle: 'italic', letterSpacing: -0.3 }}>{co}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Problem({ c }) {
+  return (
+    <Section bg="var(--bg-alt)">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 80 }}>
+        <div>
+          <Eyebrow>{c.problem.eyebrow}</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 64, lineHeight: 1.02, letterSpacing: -1.5, fontWeight: 400 }}>{c.problem.title}</h2>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, paddingTop: 12 }}>
+          {c.problem.body.map((p, i) => {
+            const last = i === c.problem.body.length - 1;
+            return <p key={i} style={{ fontSize: 18, lineHeight: 1.6, color: last ? 'var(--ink)' : 'var(--ink-soft)', fontStyle: last ? 'italic' : 'normal', fontWeight: last ? 500 : 400 }}>{p}</p>;
+          })}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Services({ c }) {
+  const [hover, setHover] = React.useState(-1);
+  return (
+    <Section id="services">
+      <div style={{ marginBottom: 64 }}>
+        <Eyebrow>{c.services.eyebrow}</Eyebrow>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 64, lineHeight: 1.02, letterSpacing: -1.5, fontWeight: 400, maxWidth: 700 }}>{c.services.title}</h2>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', borderTop: '1px solid var(--border)' }}>
+        {c.services.items.map((item, i) => {
+          const col = i % 3;
+          return (
+            <div key={i} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(-1)} style={{ padding: '36px 32px', paddingLeft: col !== 0 ? 32 : 0, paddingRight: col !== 2 ? 32 : 0, borderBottom: '1px solid var(--border)', borderRight: col !== 2 ? '1px solid var(--border)' : 'none', background: hover === i ? 'var(--bg-alt)' : 'transparent', transition: 'background 0.2s' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 12 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: 1 }}>{item.k}</span>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 400, letterSpacing: -0.5 }}>{item.t}</h3>
+              </div>
+              <p style={{ fontSize: 15, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.d}</p>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+Object.assign(window, { Eyebrow, EyebrowWithRule, Section, Nav, Hero, Problem, Services, AdvisorPhotoFrame });
+
+function About({ c, lang }) {
+  const rows = [[c.about.paty, ADVISORS[0]], [c.about.diana, ADVISORS[1]]];
+  return (
+    <Section id="about" bg="var(--ink)" color="var(--bg)">
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--bg)', opacity: 0.6, marginBottom: 20 }}>{c.about.eyebrow}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 80, alignItems: 'start', marginBottom: 80 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 72, lineHeight: 0.98, letterSpacing: -2, fontWeight: 400 }}>{c.about.title}</h2>
+        <p style={{ fontSize: 20, lineHeight: 1.55, color: 'var(--bg)', opacity: 0.85, paddingTop: 12 }}>{c.about.intro}</p>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+        {rows.map(([d, a]) => (
+          <div key={a.id} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', padding: '32px 32px 28px', borderRadius: 4 }}>
+            <div style={{ width: '100%', height: 320, marginBottom: 24, background: a.tintLight, padding: 12, boxSizing: 'border-box', border: '1px solid rgba(255,255,255,0.12)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 180, color: 'rgba(31,43,35,0.18)', letterSpacing: -6, lineHeight: 1 }}>{a.initials}</div>
+            </div>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 400, letterSpacing: -1, color: 'var(--bg)', marginBottom: 4 }}>{d.name}</h3>
+            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>{d.role}</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 1, color: 'var(--accent)', marginBottom: 20, textTransform: 'uppercase' }}>{d.company}</div>
+            <p style={{ fontSize: 15, lineHeight: 1.55, color: 'rgba(255,255,255,0.8)', marginBottom: 20 }}>{d.bio}</p>
+            <a href={d.linkedin} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--bg)', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: 2 }}>LinkedIn <span style={{ color: 'var(--accent)' }}>↗</span></a>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HowItWorks({ c }) {
+  return (
+    <Section id="how">
+      <div style={{ marginBottom: 64, maxWidth: 700 }}>
+        <Eyebrow>{c.how.eyebrow}</Eyebrow>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 64, lineHeight: 1.02, letterSpacing: -1.5, fontWeight: 400 }}>{c.how.title}</h2>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32 }}>
+        {c.how.steps.map((s, i) => (
+          <div key={i} style={{ borderTop: '2px solid var(--ink)', paddingTop: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 24 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--accent)', letterSpacing: 1 }}>{s.n}</span>
+              {i < c.how.steps.length - 1 && (
+                <svg width="28" height="12" viewBox="0 0 28 12"><path d="M0 6 L24 6 M20 2 L24 6 L20 10" stroke="#7A7568" strokeWidth="1.2" fill="none" /></svg>
+              )}
+            </div>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 400, marginBottom: 10, letterSpacing: -0.5 }}>{s.t}</h3>
+            <p style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function Packages({ c, lang }) {
+  return (
+    <Section id="packages" bg="var(--bg-alt)">
+      <div style={{ marginBottom: 64, maxWidth: 700 }}>
+        <Eyebrow>{c.packages.eyebrow}</Eyebrow>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 64, lineHeight: 1.02, letterSpacing: -1.5, fontWeight: 400 }}>{c.packages.title}</h2>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+        {c.packages.items.map((pkg, i) => {
+          const f = pkg.featured;
+          return (
+            <div key={i} style={{ background: f ? 'var(--ink)' : 'var(--card-bg)', color: f ? 'var(--bg)' : 'var(--ink)', border: f ? '1px solid var(--ink)' : '1px solid var(--border)', padding: '32px 28px', borderRadius: 4, display: 'flex', flexDirection: 'column', transform: f ? 'translateY(-12px)' : 'none', boxShadow: f ? '0 8px 32px rgba(31,43,35,0.15)' : 'none', position: 'relative' }}>
+              {f && <div style={{ position: 'absolute', top: -10, left: 24, background: 'var(--accent)', color: 'var(--accent-ink)', padding: '3px 10px', fontSize: 10, letterSpacing: 1, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', borderRadius: 2 }}>{lang === 'es' ? 'más popular' : 'most popular'}</div>}
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 400, letterSpacing: -0.8, marginBottom: 4 }}>{pkg.name}</h3>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 1, color: f ? 'rgba(255,255,255,0.6)' : 'var(--muted)', marginBottom: 4, textTransform: 'uppercase' }}>{pkg.sessions}</div>
+              <div style={{ fontSize: 14, fontStyle: 'italic', fontFamily: 'var(--font-display)', color: f ? 'var(--bg)' : 'var(--accent)', marginBottom: 24 }}>{pkg.tag}</div>
+              <ul style={{ listStyle: 'none', padding: 0, marginBottom: 28, flex: 1 }}>
+                {pkg.bullets.map((b, j) => (
+                  <li key={j} style={{ fontSize: 13, lineHeight: 1.5, marginBottom: 10, paddingLeft: 16, position: 'relative', color: f ? 'rgba(255,255,255,0.85)' : 'var(--ink-soft)' }}>
+                    <span style={{ position: 'absolute', left: 0, color: 'var(--accent)' }}>—</span>{b}
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: f ? 'var(--accent)' : 'transparent', color: f ? 'var(--accent-ink)' : 'var(--ink)', border: `1px solid ${f ? 'var(--accent)' : 'var(--ink)'}`, padding: '11px 18px', fontSize: 13, fontWeight: 500, fontFamily: 'var(--font-body)', borderRadius: 4, cursor: 'pointer' }}>{c.packages.cta} →</button>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
+  );
+}
+
+function Booking({ c, lang }) {
+  return (
+    <Section id="booking">
+      <div style={{ maxWidth: 960, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+          <Eyebrow>{c.booking.eyebrow}</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 72, lineHeight: 0.98, letterSpacing: -2, fontWeight: 400, marginBottom: 16 }}>{c.booking.title}</h2>
+          <p style={{ fontSize: 18, color: 'var(--ink-soft)', fontStyle: 'italic', fontFamily: 'var(--font-display)' }}>{c.booking.sub}</p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          {ADVISORS.map(a => {
+            const label = lang === 'es' ? `Agendar con ${a.id === 'paty' ? 'Paty' : 'Diana'}` : `Book with ${a.id === 'paty' ? 'Paty' : 'Diana'}`;
+            const name = a.id === 'paty' ? 'Paty Vega' : 'Diana Valladares';
+            return (
+              <div key={a.id} style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 4, padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: a.tintLight, color: a.tintDark, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 500, flexShrink: 0 }}>{a.initials}</div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: -0.3 }}>{name}</div>
+                    <div style={{ fontSize: 13, color: 'var(--muted)' }}>{lang === 'es' ? a.companyEs : a.companyEn}</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--muted)', fontFamily: 'var(--font-mono)', letterSpacing: 0.5, paddingTop: 4, borderTop: '1px solid var(--border)' }}>{lang === 'es' ? a.specialtyEs : a.specialtyEn}</div>
+                <a href={a.calendly} target="_blank" rel="noreferrer" style={{ display: 'block', textAlign: 'center', background: 'var(--accent)', color: 'var(--accent-ink)', padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 4, fontFamily: 'var(--font-body)', letterSpacing: 0.2, marginTop: 4 }}>{label} →</a>
+                <p style={{ fontSize: 12, color: 'var(--muted)', textAlign: 'center' }}>15 min · Google Meet · {lang === 'es' ? 'Gratis' : 'Free'}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function FAQ({ c }) {
+  const [open, setOpen] = React.useState(0);
+  return (
+    <Section id="faq" bg="var(--bg-alt)">
+      <div style={{ maxWidth: 960, margin: '0 auto' }}>
+        <div style={{ marginBottom: 56, textAlign: 'center' }}>
+          <Eyebrow>{c.faq.eyebrow}</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 56, lineHeight: 1.02, letterSpacing: -1.2, fontWeight: 400 }}>{c.faq.title}</h2>
+        </div>
+        <div>
+          {c.faq.items.map((item, i) => (
+            <div key={i} style={{ borderTop: '1px solid var(--border)' }}>
+              <button onClick={() => setOpen(open === i ? -1 : i)} style={{ width: '100%', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 24, fontFamily: 'var(--font-body)' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--ink)', letterSpacing: -0.3 }}>{item.q}</span>
+                <span style={{ width: 32, height: 32, borderRadius: '50%', background: open === i ? 'var(--accent)' : 'transparent', color: open === i ? 'var(--accent-ink)' : 'var(--ink)', border: `1px solid ${open === i ? 'var(--accent)' : 'var(--border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0, transition: 'all 0.2s' }}>{open === i ? '−' : '+'}</span>
+              </button>
+              {open === i && <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--ink-soft)', marginBottom: 24, maxWidth: 720 }}>{item.a}</p>}
+            </div>
+          ))}
+          <div style={{ borderTop: '1px solid var(--border)' }} />
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Footer({ c }) {
+  return (
+    <footer style={{ padding: '80px 48px 48px', background: 'var(--ink)', color: 'var(--bg)' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr', gap: 48, marginBottom: 64 }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+              <svg width="26" height="26" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="none" stroke="#F5F1EA" strokeWidth="1.4"/><path d="M8 19 L16 9 L24 19" fill="none" stroke="#C45A3B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="16" cy="9" r="2.2" fill="#C45A3B"/></svg>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 24 }}>Adelante Advisory</span>
+            </div>
+            <p style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontStyle: 'italic', maxWidth: 400, lineHeight: 1.2 }}>{c.footer.tagline}</p>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--bg)', opacity: 0.5, marginBottom: 12 }}>Contact</div>
+            <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--bg)', fontSize: 15 }}>{CONTACT_EMAIL}</a>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--bg)', opacity: 0.5, marginBottom: 12 }}>Follow</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <a href="#" style={{ color: 'var(--bg)', fontSize: 15 }}>Instagram ↗</a>
+              <a href="#" style={{ color: 'var(--bg)', fontSize: 15 }}>LinkedIn ↗</a>
+            </div>
+          </div>
+        </div>
+        <div style={{ paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.15)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 0.5, color: 'var(--bg)', opacity: 0.6, flexWrap: 'wrap', gap: 12 }}>
+          <span>© 2026 Adelante Advisory</span>
+          <span>{c.footer.made}</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+Object.assign(window, { About, HowItWorks, Packages, Booking, FAQ, Footer });
+
+function App() {
+  const [lang, setLang] = React.useState('en');
+  const c = lang === 'en' ? EN : ES;
+  return (
+    <main data-screen-label="Adelante marketing site">
+      <Nav c={c} lang={lang} setLang={setLang} />
+      <Hero c={c} lang={lang} />
+      <Problem c={c} />
+      <Services c={c} />
+      <About c={c} lang={lang} />
+      <HowItWorks c={c} />
+      <Packages c={c} lang={lang} />
+      <Booking c={c} lang={lang} />
+      <FAQ c={c} />
+      <Footer c={c} />
+    </main>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

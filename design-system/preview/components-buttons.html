@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style id="adelante-tokens">
+/* ============================================================
+   Adelante Advisory — Design Tokens
+   Colors, type, spacing, radii, shadows, motion.
+   Import this file and consume the vars directly.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- COLOR — brand ------------------------------- */
+  --bg:            #F5F1EA;   /* warm off-white, page background  */
+  --bg-alt:        #ECE5D8;   /* alt section / banded background  */
+  --card-bg:       #FCF8F1;   /* cards on bg; slightly warmer     */
+  --ink:           #1F2B23;   /* primary text, deep forest green  */
+  --ink-soft:      #3D4A40;   /* secondary text                   */
+  --muted:         #7A7568;   /* meta, eyebrows, captions         */
+  --border:        rgba(31, 43, 35, 0.15);
+  --accent:        #C45A3B;   /* terracotta — hero accents, CTAs  */
+  --accent-ink:    #FCF8F1;   /* foreground on accent             */
+
+  /* ---------- COLOR — advisor tints ----------------------- */
+  /* Paty (New York) */
+  --paty-tint-light: #E8D4C4;
+  --paty-tint-dark:  #8B4A2F;
+  /* Diana (Chicago) */
+  --diana-tint-light: #D6DFD4;
+  --diana-tint-dark:  #3F5A4C;
+
+  /* ---------- COLOR — on-ink (dark sections) -------------- */
+  --on-ink:        #F5F1EA;
+  --on-ink-soft:   rgba(245, 241, 234, 0.80);
+  --on-ink-muted:  rgba(245, 241, 234, 0.60);
+  --on-ink-border: rgba(255, 255, 255, 0.12);
+  --on-ink-fill:   rgba(255, 255, 255, 0.04);
+
+  /* ---------- TYPE — families ----------------------------- */
+  --font-display:  "Instrument Serif", "Times New Roman", serif;
+  --font-body:     "Inter Tight", -apple-system, system-ui, sans-serif;
+  --font-mono:     "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  /* ---------- TYPE — size scale --------------------------- */
+  --t-display-xl:  clamp(64px, 8vw, 128px);   /* hero headline */
+  --t-display-l:   72px;                       /* section display */
+  --t-display-m:   64px;                       /* section title   */
+  --t-display-s:   56px;                       /* smaller sections */
+  --t-heading-l:   36px;                       /* founder / package name */
+  --t-heading-m:   26px;                       /* card / service title */
+  --t-heading-s:   22px;                       /* logo wordmark / qa */
+  --t-body-l:      20px;                       /* intro copy */
+  --t-body:        18px;                       /* body paragraphs */
+  --t-body-s:      15px;                       /* card body */
+  --t-body-xs:     13px;                       /* meta / UI */
+  --t-caption:     12px;
+  --t-label:       11px;                       /* mono eyebrow */
+  --t-label-xs:    10px;
+
+  /* ---------- SPACING ------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 120px;                           /* section pad Y    */
+
+  --gutter: 48px;                              /* page horizontal  */
+  --max-w: 1280px;                             /* page container   */
+  --max-w-narrow: 960px;
+
+  /* ---------- RADIUS -------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;                            /* default — used everywhere */
+  --radius-pill: 999px;
+
+  /* ---------- SHADOW -------------------------------------- */
+  --shadow-photo: 0 2px 12px rgba(31, 43, 35, 0.08);
+  --shadow-card:  0 8px 32px rgba(31, 43, 35, 0.15);
+
+  /* ---------- MOTION -------------------------------------- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.15s;
+  --dur: 0.2s;
+  --dur-slow: 0.4s;
+
+  /* ---------- EFFECTS ------------------------------------- */
+  --blur-nav: blur(10px);
+  --nav-bg: rgba(245, 241, 234, 0.92);
+}
+
+/* ============================================================
+   Base reset + semantic element defaults
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button { font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ============================================================
+   Semantic type styles — use class OR raw element
+   ============================================================ */
+
+/* Hero — massive italic display with terracotta accent word */
+.t-display-xl, h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-display-xl);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -2.5px;
+  color: var(--ink);
+}
+
+.t-display-l {
+  font-family: var(--font-display);
+  font-size: var(--t-display-l);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -2px;
+  color: var(--ink);
+}
+
+/* Section title */
+.t-display-m, h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-display-m);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+}
+
+.t-display-s {
+  font-family: var(--font-display);
+  font-size: var(--t-display-s);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -1.2px;
+}
+
+/* Founder / package name */
+.t-heading-l, h3 {
+  font-family: var(--font-display);
+  font-size: var(--t-heading-l);
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+/* Card title */
+.t-heading-m {
+  font-family: var(--font-display);
+  font-size: var(--t-heading-m);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+/* Wordmark / inline heading */
+.t-heading-s {
+  font-family: var(--font-display);
+  font-size: var(--t-heading-s);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+/* Italic serif — pull-quotes, "simple-sub" under hero, etc */
+.t-serif-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+/* Body copy */
+p, .t-body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.t-body-l {
+  font-family: var(--font-body);
+  font-size: var(--t-body-l);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.t-body-s {
+  font-family: var(--font-body);
+  font-size: var(--t-body-s);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.t-body-xs {
+  font-family: var(--font-body);
+  font-size: var(--t-body-xs);
+  line-height: 1.5;
+}
+
+/* Mono eyebrow — section labels, meta lines, lang toggle */
+.t-eyebrow, .t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.t-mono-sm {
+  font-family: var(--font-mono);
+  font-size: var(--t-label-xs);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+code, pre, .t-code {
+  font-family: var(--font-mono);
+  font-size: var(--t-body-xs);
+}
+
+/* Hero accent-word treatment: <span class="u-accent"> inside display */
+.u-accent    { color: var(--accent); }
+.u-italic    { font-style: italic; }
+.u-ink-soft  { color: var(--ink-soft); }
+
+/* Accent underline — used for thin decorative rules next to eyebrows */
+.u-rule {
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--muted);
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+</style>
+<style>
+  html,body{background:var(--bg);padding:22px 28px;}
+  .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  button{font-family:var(--font-body);border-radius:4px;cursor:pointer;letter-spacing:0.2px;}
+  .primary{background:var(--accent);color:var(--accent-ink);border:none;padding:16px 24px;font-size:15px;font-weight:500;}
+  .ink{background:var(--ink);color:var(--bg);border:none;padding:9px 18px;font-size:13px;font-weight:500;}
+  .outline{background:transparent;color:var(--ink);border:1px solid var(--ink);padding:11px 18px;font-size:13px;font-weight:500;}
+  .ghost{background:transparent;border:none;font-size:13px;font-weight:500;color:var(--ink);padding:6px 0;}
+  .lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);width:100%;margin-top:6px;}
+</style></head><body>
+  <div class="row">
+    <button class="primary">Book a free 15-min call →</button>
+    <button class="ink">Book a free call →</button>
+  </div>
+  <div class="row" style="margin-top:16px;">
+    <button class="outline">Inquire about pricing →</button>
+    <button class="ghost">Services</button>
+    <a style="font-size:13px;border-bottom:1px solid var(--border);padding-bottom:2px;">LinkedIn <span style="color:var(--accent)">↗</span></a>
+  </div>
+  <div class="lbl">primary · ink · outline · ghost · link — radius 4, no shadow</div>
+</body></html>

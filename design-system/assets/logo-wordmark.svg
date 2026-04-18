@@ -1,0 +1,7 @@
+<svg width="260" height="36" viewBox="0 0 260 36" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="18" cy="18" r="15" fill="none" stroke="#1F2B23" stroke-width="1.4"></circle>
+  <path d="M10 21 L18 11 L26 21" fill="none" stroke="#C45A3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+  <circle cx="18" cy="11" r="2.2" fill="#C45A3B"></circle>
+  <text x="44" y="26" font-family="Instrument Serif, Times New Roman, serif" font-size="26" fill="#1F2B23" letter-spacing="-0.5">Adelante</text>
+  <text x="172" y="22" font-family="JetBrains Mono, monospace" font-size="10" fill="#7A7568" letter-spacing="1.8">ADVISORY</text>
+</svg>

@@ -1,0 +1,1 @@
+<!-- Shared wrapper for all preview cards. Each card imports colors_and_type.css and renders at ~700×H. -->
