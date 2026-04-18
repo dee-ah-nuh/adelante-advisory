@@ -35,12 +35,9 @@ export const ADVISORS = [
 
 export const TRUSTED_COMPANIES = ['SICPA', 'S&P Global', 'AArete', 'Daarwill'];
 
-// Replace with real Calendly links once accounts are created
 export const CALENDLY = {
-  paty: 'https://calendly.com/PLACEHOLDER_PATY',
-  diana: 'https://calendly.com/PLACEHOLDER_DIANA',
+  paty: 'https://calendly.com/adelanteadvisory/15-min-paty',
+  diana: 'https://calendly.com/adelanteadvisory/15-min-diana',
 };
 
-// Replace with real number once Google Voice is set up
-export const WHATSAPP_NUMBER = '+1XXXXXXXXXX';
 export const CONTACT_EMAIL = 'adelanteadvisory@gmail.com';

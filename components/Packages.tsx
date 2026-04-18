@@ -1,7 +1,7 @@
 'use client';
 
 import { theme as th } from '@/lib/theme';
-import { WHATSAPP_NUMBER, CONTACT_EMAIL, CALENDLY } from '@/content/shared';
+import { CONTACT_EMAIL, CALENDLY } from '@/content/shared';
 import type { Content } from '@/content/en';
 
 type Props = { c: Content; lang: 'en' | 'es' };
@@ -34,10 +34,6 @@ export default function Packages({ c, lang }: Props) {
           <span style={{ fontFamily: th.fontMono, fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: th.muted }}>
             {lang === 'es' ? 'Contáctanos' : 'Reach us via'}
           </span>
-          <ContactLink
-            href={`https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}`}
-            label="WhatsApp"
-          />
           <ContactLink
             href={CALENDLY.paty}
             label="Calendly"
