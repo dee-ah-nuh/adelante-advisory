@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { theme as th } from '@/lib/theme';
 
@@ -27,6 +28,7 @@ const NEEDS = [
 const STEPS = ['Your stage', 'Your field', 'Your interests', 'What you need'];
 
 export default function IntakePage() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [stage, setStage] = useState<Stage>('');
   const [major, setMajor] = useState('');
@@ -37,7 +39,6 @@ export default function IntakePage() {
   const [linkedin, setLinkedin] = useState('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
   const [error, setError] = useState('');
 
   function toggleArr(arr: string[], setArr: (v: string[]) => void, val: string) {
@@ -49,49 +50,29 @@ export default function IntakePage() {
     setLoading(true);
     setError('');
     const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
     const { error: err } = await supabase.from('intake_submissions').insert({
-      name, email, stage, major,
-      interests, needs, linkedin_url: linkedin || null, notes: notes || null,
+      name,
+      email: user?.email ?? email,
+      stage,
+      major,
+      interests,
+      needs,
+      linkedin_url: linkedin || null,
+      notes: notes || null,
     });
-    if (err) { setError(err.message); setLoading(false); }
-    else setDone(true);
+
+    if (err) { setError(err.message); setLoading(false); return; }
+    router.push('/dashboard');
   }
 
   function canAdvance() {
     if (step === 0) return !!stage;
-    if (step === 1) return true;
     if (step === 2) return interests.length > 0;
     return true;
   }
-
-  if (done) return (
-    <div style={{ minHeight: '100vh', background: th.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ textAlign: 'center', maxWidth: 480 }}>
-        <div style={{
-          width: 56, height: 56, borderRadius: '50%',
-          background: th.accent, color: th.accentInk,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 24px', fontSize: 22,
-        }}>✓</div>
-        <h2 style={{ fontFamily: th.fontDisplay, fontSize: 36, fontWeight: 400, fontStyle: 'italic', letterSpacing: -0.5, marginBottom: 12 }}>
-          We got you.
-        </h2>
-        <p style={{ fontSize: 15, color: th.inkSoft, lineHeight: 1.7, marginBottom: 8 }}>
-          Thank you, <strong>{name.split(' ')[0]}</strong>. We'll reach out to <strong>{email}</strong> within a few days to set up your free 15-min call.
-        </p>
-        <p style={{ fontSize: 14, color: th.muted, lineHeight: 1.6, marginBottom: 32 }}>
-          In the meantime — look us up on LinkedIn. We're easy to find.
-        </p>
-        <a href="/" style={{
-          display: 'inline-block', fontSize: 14, color: th.accentInk,
-          background: th.accent, padding: '12px 24px', borderRadius: th.radius,
-          fontFamily: th.fontBody, fontWeight: 500,
-        }}>
-          Back to site →
-        </a>
-      </div>
-    </div>
-  );
 
   return (
     <div style={{ minHeight: '100vh', background: th.bg }}>
@@ -125,7 +106,6 @@ export default function IntakePage() {
       </div>
 
       <main style={{ maxWidth: 600, margin: '0 auto', padding: '56px 24px 80px' }}>
-        {/* Eyebrow */}
         <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: th.muted, marginBottom: 12 }}>
           {STEPS[step]}
         </div>
@@ -142,18 +122,14 @@ export default function IntakePage() {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {STAGES.map(s => (
-                <button
-                  key={s.value}
-                  onClick={() => setStage(s.value as Stage)}
-                  style={{
-                    textAlign: 'left', padding: '20px 24px',
-                    background: stage === s.value ? th.ink : th.cardBg,
-                    color: stage === s.value ? th.accentInk : th.ink,
-                    border: `1px solid ${stage === s.value ? th.ink : th.border}`,
-                    borderRadius: th.radius, cursor: 'pointer',
-                    transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
-                  }}
-                >
+                <button key={s.value} onClick={() => setStage(s.value as Stage)} style={{
+                  textAlign: 'left', padding: '20px 24px',
+                  background: stage === s.value ? th.ink : th.cardBg,
+                  color: stage === s.value ? th.accentInk : th.ink,
+                  border: `1px solid ${stage === s.value ? th.ink : th.border}`,
+                  borderRadius: th.radius, cursor: 'pointer',
+                  transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
+                }}>
                   <div style={{ fontFamily: th.fontBody, fontWeight: 500, fontSize: 15 }}>{s.label}</div>
                   <div style={{ fontSize: 13, color: stage === s.value ? 'rgba(252,248,241,0.7)' : th.muted, marginTop: 4 }}>{s.sub}</div>
                 </button>
@@ -162,7 +138,7 @@ export default function IntakePage() {
           </>
         )}
 
-        {/* Step 1 — Major / Field */}
+        {/* Step 1 — Major */}
         {step === 1 && (
           <>
             <h1 style={{ fontFamily: th.fontDisplay, fontSize: 40, fontWeight: 400, letterSpacing: -1, lineHeight: 1.1, marginBottom: 8 }}>
@@ -173,20 +149,11 @@ export default function IntakePage() {
               Or — what did you study, or what field are you in? If you're not sure yet, just say that.
             </p>
             <label style={{ display: 'block' }}>
-              <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: th.muted, marginBottom: 8 }}>
-                Major / field of study
-              </div>
+              <div style={labelStyle}>Major / field of study</div>
               <input
-                type="text"
-                value={major}
-                onChange={e => setMajor(e.target.value)}
+                type="text" value={major} onChange={e => setMajor(e.target.value)}
                 placeholder="e.g. Business Administration, Computer Science, Undecided…"
-                style={{
-                  width: '100%', boxSizing: 'border-box',
-                  padding: '14px 16px', background: th.cardBg,
-                  border: `1px solid ${th.border}`, borderRadius: th.radius,
-                  fontSize: 15, color: th.ink, fontFamily: th.fontBody, outline: 'none',
-                }}
+                style={inputStyle}
               />
             </label>
           </>
@@ -204,22 +171,16 @@ export default function IntakePage() {
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               {INTERESTS.map(item => {
-                const selected = interests.includes(item);
+                const sel = interests.includes(item);
                 return (
-                  <button
-                    key={item}
-                    onClick={() => toggleArr(interests, setInterests, item)}
-                    style={{
-                      padding: '10px 18px', fontFamily: th.fontBody, fontSize: 14,
-                      background: selected ? th.accent : th.cardBg,
-                      color: selected ? th.accentInk : th.ink,
-                      border: `1px solid ${selected ? th.accent : th.border}`,
-                      borderRadius: th.radius, cursor: 'pointer',
-                      transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
-                    }}
-                  >
-                    {item}
-                  </button>
+                  <button key={item} onClick={() => toggleArr(interests, setInterests, item)} style={{
+                    padding: '10px 18px', fontFamily: th.fontBody, fontSize: 14,
+                    background: sel ? th.accent : th.cardBg,
+                    color: sel ? th.accentInk : th.ink,
+                    border: `1px solid ${sel ? th.accent : th.border}`,
+                    borderRadius: th.radius, cursor: 'pointer',
+                    transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
+                  }}>{item}</button>
                 );
               })}
             </div>
@@ -236,66 +197,47 @@ export default function IntakePage() {
             <p style={{ fontSize: 15, color: th.inkSoft, marginBottom: 28, lineHeight: 1.6 }}>
               Be honest — this is exactly what we're here for.
             </p>
-
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 40 }}>
               {NEEDS.map(item => {
-                const selected = needs.includes(item);
+                const sel = needs.includes(item);
                 return (
-                  <button
-                    key={item}
-                    onClick={() => toggleArr(needs, setNeeds, item)}
-                    style={{
-                      padding: '10px 18px', fontFamily: th.fontBody, fontSize: 14,
-                      background: selected ? th.accent : th.cardBg,
-                      color: selected ? th.accentInk : th.ink,
-                      border: `1px solid ${selected ? th.accent : th.border}`,
-                      borderRadius: th.radius, cursor: 'pointer',
-                      transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
-                    }}
-                  >
-                    {item}
-                  </button>
+                  <button key={item} onClick={() => toggleArr(needs, setNeeds, item)} style={{
+                    padding: '10px 18px', fontFamily: th.fontBody, fontSize: 14,
+                    background: sel ? th.accent : th.cardBg,
+                    color: sel ? th.accentInk : th.ink,
+                    border: `1px solid ${sel ? th.accent : th.border}`,
+                    borderRadius: th.radius, cursor: 'pointer',
+                    transition: 'background 0.2s cubic-bezier(0.4,0,0.2,1)',
+                  }}>{item}</button>
                 );
               })}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ borderTop: `1px solid ${th.border}`, paddingTop: 32, marginBottom: 4 }}>
-                <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: th.muted, marginBottom: 16 }}>
-                  How to reach you
-                </div>
+            <div style={{ borderTop: `1px solid ${th.border}`, paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: th.muted }}>
+                How to reach you
               </div>
-
               <label style={{ display: 'block' }}>
                 <div style={labelStyle}>Full name</div>
                 <input type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Patricia Vega" style={inputStyle} />
               </label>
-
               <label style={{ display: 'block' }}>
                 <div style={labelStyle}>Email</div>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="you@email.com" style={inputStyle} />
               </label>
-
               <label style={{ display: 'block' }}>
-                <div style={labelStyle}>LinkedIn <span style={{ color: th.muted, textTransform: 'none', fontSize: 11, letterSpacing: 0, fontFamily: th.fontBody }}>(optional)</span></div>
+                <div style={labelStyle}>LinkedIn <span style={{ fontFamily: th.fontBody, fontSize: 11, textTransform: 'none', letterSpacing: 0, color: th.muted }}>(optional)</span></div>
                 <input type="url" value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="linkedin.com/in/yourname" style={inputStyle} />
               </label>
-
               <label style={{ display: 'block' }}>
-                <div style={labelStyle}>Anything else we should know? <span style={{ color: th.muted, textTransform: 'none', fontSize: 11, letterSpacing: 0, fontFamily: th.fontBody }}>(optional)</span></div>
-                <textarea
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                  placeholder="Tell us whatever feels relevant — your situation, a specific question, what you've tried already."
-                  rows={4}
+                <div style={labelStyle}>Anything else? <span style={{ fontFamily: th.fontBody, fontSize: 11, textTransform: 'none', letterSpacing: 0, color: th.muted }}>(optional)</span></div>
+                <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={4}
+                  placeholder="Tell us whatever feels relevant — your situation, a specific question, what you've already tried."
                   style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
                 />
               </label>
-
               {error && (
-                <div style={{ fontSize: 13, color: th.accent, background: '#fdf0ed', padding: '10px 14px', borderRadius: th.radius }}>
-                  {error}
-                </div>
+                <div style={{ fontSize: 13, color: th.accent, background: '#fdf0ed', padding: '10px 14px', borderRadius: th.radius }}>{error}</div>
               )}
             </div>
           </>
@@ -308,38 +250,24 @@ export default function IntakePage() {
               background: 'transparent', border: `1px solid ${th.border}`,
               padding: '12px 20px', fontSize: 14, color: th.inkSoft,
               borderRadius: th.radius, cursor: 'pointer', fontFamily: th.fontBody,
-            }}>
-              ← Back
-            </button>
+            }}>← Back</button>
           ) : <div />}
 
           {step < STEPS.length - 1 ? (
-            <button
-              onClick={() => setStep(s => s + 1)}
-              disabled={!canAdvance()}
-              style={{
-                background: canAdvance() ? th.ink : th.border,
-                color: canAdvance() ? th.accentInk : th.muted,
-                border: 'none', padding: '12px 28px', fontSize: 14, fontWeight: 500,
-                borderRadius: th.radius, cursor: canAdvance() ? 'pointer' : 'not-allowed',
-                fontFamily: th.fontBody, transition: 'background 0.2s',
-              }}
-            >
-              Continue →
-            </button>
+            <button onClick={() => setStep(s => s + 1)} disabled={!canAdvance()} style={{
+              background: canAdvance() ? th.ink : th.border,
+              color: canAdvance() ? th.accentInk : th.muted,
+              border: 'none', padding: '12px 28px', fontSize: 14, fontWeight: 500,
+              borderRadius: th.radius, cursor: canAdvance() ? 'pointer' : 'not-allowed',
+              fontFamily: th.fontBody, transition: 'background 0.2s',
+            }}>Continue →</button>
           ) : (
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              style={{
-                background: th.accent, color: th.accentInk, border: 'none',
-                padding: '12px 28px', fontSize: 14, fontWeight: 500,
-                borderRadius: th.radius, cursor: loading ? 'not-allowed' : 'pointer',
-                fontFamily: th.fontBody, opacity: loading ? 0.7 : 1,
-              }}
-            >
-              {loading ? 'Sending…' : 'Send to Adelante →'}
-            </button>
+            <button onClick={handleSubmit} disabled={loading} style={{
+              background: th.accent, color: th.accentInk, border: 'none',
+              padding: '12px 28px', fontSize: 14, fontWeight: 500,
+              borderRadius: th.radius, cursor: loading ? 'not-allowed' : 'pointer',
+              fontFamily: th.fontBody, opacity: loading ? 0.7 : 1,
+            }}>{loading ? 'Sending…' : 'Send to Adelante →'}</button>
           )}
         </div>
       </main>
@@ -348,15 +276,13 @@ export default function IntakePage() {
 }
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: '"JetBrains Mono", monospace',
-  fontSize: 10, textTransform: 'uppercase', letterSpacing: 1.5,
-  color: '#7A7568', marginBottom: 8,
+  fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
+  textTransform: 'uppercase', letterSpacing: 1.5, color: '#7A7568', marginBottom: 8,
 };
 
 const inputStyle: React.CSSProperties = {
-  width: '100%', boxSizing: 'border-box',
-  padding: '12px 14px', background: '#FCF8F1',
-  border: '1px solid rgba(31,43,35,0.15)', borderRadius: 4,
-  fontSize: 14, color: '#1F2B23',
+  width: '100%', boxSizing: 'border-box', padding: '12px 14px',
+  background: '#FCF8F1', border: '1px solid rgba(31,43,35,0.15)',
+  borderRadius: 4, fontSize: 14, color: '#1F2B23',
   fontFamily: '"Inter Tight", system-ui, sans-serif', outline: 'none',
 };

@@ -61,6 +61,10 @@ export default function Nav({ c, lang, setLang }: Props) {
               }}>{item.label}</button>
             ))}
             <LangToggle lang={lang} setLang={setLang} />
+            <a href="/dashboard" style={{
+              fontSize: 13, color: th.ink, fontFamily: th.fontBody, fontWeight: 500,
+              borderBottom: `1px solid ${th.border}`, textDecoration: 'none',
+            }}>My profile</a>
             <button onClick={() => scrollTo('booking')} style={{
               background: th.ink, color: th.bg, border: 'none',
               padding: '9px 18px', fontSize: 13, fontWeight: 500,
@@ -116,6 +120,12 @@ export default function Nav({ c, lang, setLang }: Props) {
               letterSpacing: -0.5, fontWeight: 400,
             }}>{item.label}</button>
           ))}
+          <a href="/dashboard" style={{
+            display: 'block', padding: '18px 0',
+            borderBottom: `1px solid ${th.border}`,
+            fontFamily: th.fontDisplay, fontSize: 28,
+            color: th.ink, letterSpacing: -0.5, textDecoration: 'none',
+          }}>My profile</a>
           <button onClick={() => { scrollTo('booking'); setMenuOpen(false); }} style={{
             marginTop: 32, background: th.accent, color: th.accentInk, border: 'none',
             padding: '16px 24px', fontSize: 15, fontWeight: 500,
