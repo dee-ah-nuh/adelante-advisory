@@ -1,18 +1,22 @@
+'use client';
+
 import { theme as th } from '@/lib/theme';
 import { CONTACT_EMAIL } from '@/content/shared';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import type { Content } from '@/content/en';
 
 type Props = { c: Content };
 
 export default function Footer({ c }: Props) {
+  const isMobile = useIsMobile();
   return (
-    <footer style={{ padding: '80px 48px 48px', background: th.ink, color: th.bg }}>
+    <footer style={{ padding: isMobile ? '56px 20px 32px' : '80px 48px 48px', background: th.ink, color: th.bg }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{
-          display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr',
-          gap: 48, marginBottom: 64,
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr 1fr',
+          gap: isMobile ? 36 : 48, marginBottom: isMobile ? 40 : 64,
         }}>
-          {/* Brand */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
               <svg width="26" height="26" viewBox="0 0 26 26">
@@ -23,39 +27,27 @@ export default function Footer({ c }: Props) {
               <span style={{ fontFamily: th.fontDisplay, fontSize: 24 }}>Adelante Advisory</span>
             </div>
             <p style={{
-              fontFamily: th.fontDisplay, fontSize: 28,
+              fontFamily: th.fontDisplay, fontSize: isMobile ? 22 : 28,
               fontStyle: 'italic', maxWidth: 400, lineHeight: 1.2,
             }}>{c.footer.tagline}</p>
           </div>
-
-          {/* Contact */}
           <div>
-            <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: th.bg, opacity: 0.5, marginBottom: 12 }}>
-              Contact
-            </div>
-            <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: th.bg, fontSize: 15 }}>
-              {CONTACT_EMAIL}
-            </a>
+            <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: th.bg, opacity: 0.5, marginBottom: 12 }}>Contact</div>
+            <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: th.bg, fontSize: 15 }}>{CONTACT_EMAIL}</a>
           </div>
-
-          {/* Follow */}
           <div>
-            <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: th.bg, opacity: 0.5, marginBottom: 12 }}>
-              Follow
-            </div>
+            <div style={{ fontFamily: th.fontMono, fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: th.bg, opacity: 0.5, marginBottom: 12 }}>Follow</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <a href="#" style={{ color: th.bg, fontSize: 15 }}>Instagram ↗</a>
               <a href="#" style={{ color: th.bg, fontSize: 15 }}>LinkedIn ↗</a>
             </div>
           </div>
         </div>
-
         <div style={{
           paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.15)',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           fontFamily: th.fontMono, fontSize: 11, letterSpacing: 0.5,
-          color: th.bg, opacity: 0.6,
-          flexWrap: 'wrap', gap: 12,
+          color: th.bg, opacity: 0.6, flexWrap: 'wrap', gap: 12,
         }}>
           <span>© 2026 Adelante Advisory</span>
           <span>{c.footer.made}</span>
