@@ -121,15 +121,6 @@ git push
 
 ---
 
-## Roadmap
 
-- [ ] Buy domain `adelanteadvisory.com` (Namecheap ~$12/yr)
-- [ ] Connect domain to Vercel
-- [ ] Set up Google Voice number for WhatsApp
-- [ ] Supabase auth — user accounts + appointment history
-- [ ] Stripe payments — package checkout
-- [ ] Mobile responsive polish
-
----
 
 *Made with cariño in New York & Chicago.*
